@@ -1,0 +1,43 @@
+package com.example.usuario.inventorydatabase.data.db;
+
+import android.app.Application;
+
+import com.example.usuario.inventorydatabase.data.db.model.InventoryOpenHelper;
+import com.example.usuario.inventorydatabase.data.prefs.AppPreferencesHelper;
+
+/**
+ * Clase singleton (hereda de Application) que contiene los datos.
+ * Inicializa la instancia de preferencias.
+ *
+ * @author Enrique Casielles
+ * @version 2.0
+ * @see android.app.Application
+ * @see AppPreferencesHelper
+ */
+public class InventoryApplication extends Application {
+
+    public static final String PREF_NAME = "preferences";
+
+    private static AppPreferencesHelper appPreferencesHelper;
+    private static InventoryApplication context;
+
+    public InventoryApplication() {
+        context = this;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        appPreferencesHelper = AppPreferencesHelper.getInstance();
+        InventoryOpenHelper.getInstance().openDatabase();
+    }
+
+    public static AppPreferencesHelper getAppPreferencesHelper() {
+        return appPreferencesHelper;
+    }
+
+    public static InventoryApplication getContext() {
+        return context;
+    }
+
+}
