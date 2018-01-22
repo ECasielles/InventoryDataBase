@@ -18,6 +18,7 @@ public class Dependency implements Comparable, Parcelable {
     private String name;
     private String shortname;
     private String description;
+    private String imageName;
     public static String TAG = "Dependency";
 
     //Forma alternativa de declarar los Comparator
@@ -47,11 +48,12 @@ public class Dependency implements Comparable, Parcelable {
     };
 
 
-    public Dependency(int _ID, String name, String shortname, String description) {
+    public Dependency(int _ID, String name, String shortname, String description, String imageName) {
         this._ID = _ID;
         this.name = name;
         this.shortname = shortname;
         this.description = description;
+        this.imageName = imageName;
     }
 
     //CREATOR DEL PARCELABLE
@@ -60,6 +62,7 @@ public class Dependency implements Comparable, Parcelable {
         name = in.readString();
         shortname = in.readString();
         description = in.readString();
+        imageName = in.readString();
     }
 
     public static final Creator<Dependency> CREATOR = new Creator<Dependency>() {
@@ -97,6 +100,12 @@ public class Dependency implements Comparable, Parcelable {
     }
     public void setDescription(String description) {
         this.description = description;
+    }
+    public String getImageName() {
+        return imageName;
+    }
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 
     @Override
@@ -139,6 +148,7 @@ public class Dependency implements Comparable, Parcelable {
         parcel.writeString(name);
         parcel.writeString(shortname);
         parcel.writeString(description);
+        parcel.writeString(imageName);
     }
 
     /**

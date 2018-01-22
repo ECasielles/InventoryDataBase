@@ -7,14 +7,20 @@ import android.os.Build;
 import com.example.usuario.inventorydatabase.data.db.InventoryApplication;
 import com.example.usuario.inventorydatabase.data.db.InventoryContract;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * Clase que trabaja con la BD.
  */
 
 public class InventoryOpenHelper extends SQLiteOpenHelper {
 
-    private static int DATABASE_VERSION = 1;
-    private static InventoryOpenHelper helper;
+    //Al ser volátil, no se guarda una copia del objeto BD y se
+    //actualiza su estado en tiempo real.
+    private volatile static InventoryOpenHelper helper;
+    //AtomicInteger garantiza la actualización en tiempo real del número de
+    //hilos que acceden a la BD.
+    private AtomicInteger openCounter = new AtomicInteger(0);
     private SQLiteDatabase sqLiteDatabase;
 
     public InventoryOpenHelper() {
@@ -24,7 +30,10 @@ public class InventoryOpenHelper extends SQLiteOpenHelper {
                 null, InventoryContract.DATABASE_VERSION);
     }
 
-    public static InventoryOpenHelper getInstance() {
+    /**
+     * Devuelve instancia única. Puede ser accedido por varios hilos.
+     */
+    public synchronized static InventoryOpenHelper getInstance() {
         if(helper == null)
             helper = new InventoryOpenHelper();
         return helper;
@@ -41,27 +50,38 @@ public class InventoryOpenHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(InventoryContract.SectorEntry.SQL_INSERT_ENTRIES);
     }
 
-    /**
-     * TODO: IMPLEMENTAR VERSIONES
-     * Tiene que
-     * @param sqLiteDatabase
-     * @param i
-     * @param i1
-     */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         //IMPORTANTE: A la hora de eliminar hay que tener en cuenta el orden por
         //claves ajenas.
+        //Esta es la forma rápida.
         sqLiteDatabase.execSQL(InventoryContract.DependencyEntry.SQL_DELETE_ENTRIES);
         sqLiteDatabase.execSQL(InventoryContract.SectorEntry.SQL_DELETE_ENTRIES);
         onCreate(sqLiteDatabase);
-
     }
 
-    public void openDatabase() {
+    /**
+     * Va a representar la BD. Va a contar cuántos hilos acceden a la BD.
+     * Sólo el primer hilo abre la BD.
+     * @return
+     */
+    public synchronized SQLiteDatabase openDatabase() {
         //Aquí es cuando se crean las llamadas callback y diferentes métodos
-        //Se crea y/o abre la Bd.
-        sqLiteDatabase = getWritableDatabase();
+        //Se crea y/o abre la BD.
+        if(openCounter.incrementAndGet() == 1)
+            //getWritableDatabase cierra lo que hubiera y abre de nuevo
+            //Por lo que hay que evitar llamarlo varias veces
+            sqLiteDatabase = getWritableDatabase();
+        return sqLiteDatabase;
+    }
+
+    /**
+     * Sólo el último hilo cierra la BD.
+     */
+    public synchronized void closeDatabase() {
+        if(openCounter.decrementAndGet() == 0)
+            //Cierro la BD.
+            sqLiteDatabase.close();
     }
 
     @Override

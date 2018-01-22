@@ -21,7 +21,7 @@ public interface AddEditDependencyContract {
         void setValidateDependencyError();
     }
     interface Presenter extends BasePresenter, Serializable {
-        void saveDependency(String name, String shortName, String description);
+        void saveDependency(String name, String shortName, String description, String imageName);
         void editDependency(Dependency dependency, String description);
         @Override
         void onDestroy();

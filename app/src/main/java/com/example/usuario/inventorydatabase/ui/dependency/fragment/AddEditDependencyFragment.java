@@ -147,7 +147,7 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
                     presenter.saveDependency(
                             tilName.getEditText().getText().toString(),
                             tilShortName.getEditText().getText().toString(),
-                            tilDescription.getEditText().getText().toString());
+                            tilDescription.getEditText().getText().toString(), "");
                 if(addEditMode.getMode() == AddEdit.EDIT_MODE){
                     Dependency dependency = getArguments().getParcelable(Dependency.TAG);
                     presenter.editDependency(dependency, tilDescription.getEditText().getText().toString());

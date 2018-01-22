@@ -22,8 +22,8 @@ public class AddEditDependencyPresenter implements AddEditDependencyContract.Pre
     }
 
     @Override
-    public void saveDependency(String name, String shortname, String description) {
-        interactor.validateDependency(name, shortname, description);
+    public void saveDependency(String name, String shortname, String description, String imageName) {
+        interactor.validateDependency(name, shortname, description, imageName);
     }
 
     @Override
@@ -48,8 +48,8 @@ public class AddEditDependencyPresenter implements AddEditDependencyContract.Pre
         view.setDescriptionEmptyError();
     }
     @Override
-    public void onSuccess(String name, String shortname, String description) {
-        interactor.addDependency(name, shortname, description);
+    public void onSuccess(String name, String shortname, String description, String imageName) {
+        interactor.addDependency(name, shortname, description, imageName);
         view.navigateToListDependency();
     }
 

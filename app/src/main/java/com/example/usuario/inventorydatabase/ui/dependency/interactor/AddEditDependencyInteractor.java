@@ -13,12 +13,12 @@ public interface AddEditDependencyInteractor {
         void onShortNameEmptyError();
         void onShortNameLengthError();
         void onDescriptionEmptyError();
-        void onSuccess(String name, String shortname, String description);
+        void onSuccess(String name, String shortname, String description, String imageName);
     }
 
-    void validateDependency(String name, String shortname, String description);
+    void validateDependency(String name, String shortname, String description, String imageName);
 
-    void addDependency(String name, String shortname, String description);
+    void addDependency(String name, String shortname, String description, String imageName);
 
     void editDependency(Dependency dependency, String description);
 }

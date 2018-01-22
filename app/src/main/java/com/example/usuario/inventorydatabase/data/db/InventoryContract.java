@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
  */
 public final class InventoryContract {
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "Inventory.db";
     //Constructor privado para que no sea instanciada
     private InventoryContract() { }
@@ -28,6 +28,8 @@ public final class InventoryContract {
                 BaseColumns._ID, COLUMN_NAME, COLUMN_SHORTNAME,
                 COLUMN_DESCRIPTION, COLUMN_IMAGENAME
         };
+        public static final String DEFAULT_SORT = COLUMN_NAME;
+
         //Hay dos opciones
         public static final String SQL_CREATE_ENTRIES = String.format(
                 "CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -73,9 +75,9 @@ public final class InventoryContract {
         public static final String COLUMN_IMAGEBASE64 = "imageBase64";
         public static final String COLUMN_IMAGENAME = "imageName";
 
-        public static final String REFERENCES = String.format(
-                "REFERENCES %s(%s), ON UPDATE CASCADE ON DELETE RESTRICT",
-                DependencyEntry.TABLE_NAME, BaseColumns._ID
+        public static final String REFERENCES_DEPENDENCY_ID = String.format(
+                "FOREIGN KEY (%s) REFERENCES %s(%s) ON UPDATE CASCADE ON DELETE RESTRICT",
+                COLUMN_DEPENDENCY_ID, DependencyEntry.TABLE_NAME, BaseColumns._ID
         );
 
         //En el mismo orden que las declaramos
@@ -85,21 +87,23 @@ public final class InventoryContract {
         };
         //Hay dos opciones
         public static final String SQL_CREATE_ENTRIES = String.format(
-                "CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "%s INTEGER NOT NULL" +
-                        "%s TEXT NOT NULL," +
-                        "%s TEXT NOT NULL," +
-                        "%s TEXT NOT NULL," +
-                        "%s TEXT NOT NULL," +
-                        "%s TEXT NOT NULL %s)",
+                "CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "%s INTEGER NOT NULL, " +
+                        "%s TEXT NOT NULL, " +
+                        "%s TEXT NOT NULL, " +
+                        "%s TEXT NOT NULL, " +
+                        "%s TEXT NOT NULL, " +
+                        "%s TEXT NOT NULL, " +
+                        "%s)",
                 TABLE_NAME,
                 BaseColumns._ID,
-                COLUMN_DEPENDENCY_ID, BaseColumns._ID,
+                COLUMN_DEPENDENCY_ID,
                 COLUMN_NAME,
                 COLUMN_SHORTNAME,
                 COLUMN_DESCRIPTION,
                 COLUMN_IMAGEBASE64,
-                COLUMN_IMAGENAME, REFERENCES
+                COLUMN_IMAGENAME,
+                REFERENCES_DEPENDENCY_ID
         );
         public static final String SQL_DELETE_ENTRIES = String.format(
                 "DROP TABLE IF EXISTS %s", TABLE_NAME);

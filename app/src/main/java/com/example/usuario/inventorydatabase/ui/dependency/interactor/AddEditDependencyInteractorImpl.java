@@ -17,7 +17,7 @@ public class AddEditDependencyInteractorImpl implements AddEditDependencyInterac
 
     //Aquí habría que controlarlo con excepciones en lugar de elseif
     @Override
-    public void validateDependency(String name, String shortname, String description) {
+    public void validateDependency(String name, String shortname, String description, String imageName) {
         if (name.isEmpty())
             listener.onNameEmptyError();
         else if (shortname.isEmpty())
@@ -27,12 +27,12 @@ public class AddEditDependencyInteractorImpl implements AddEditDependencyInterac
         else if (description.isEmpty())
             listener.onDescriptionEmptyError();
         else if (DependencyRepository.getInstance().exists(name, shortname))
-            listener.onSuccess(name, shortname, description);
+            listener.onSuccess(name, shortname, description, imageName);
     }
 
     @Override
-    public void addDependency(String name, String shortname, String description) {
-        Dependency dependency = new Dependency(-1, name, shortname, description);
+    public void addDependency(String name, String shortname, String description, String imageName) {
+        Dependency dependency = new Dependency(-1, name, shortname, description, imageName);
         DependencyRepository.getInstance().addDependency(dependency);
     }
 
@@ -40,7 +40,7 @@ public class AddEditDependencyInteractorImpl implements AddEditDependencyInterac
     public void editDependency(Dependency dependency, String description) {
         if(!description.isEmpty()) {
             DependencyRepository.getInstance().editDependency(dependency, description);
-            listener.onSuccess(dependency.getName(), dependency.getShortname(), dependency.getDescription());
+            listener.onSuccess(dependency.getName(), dependency.getShortname(), dependency.getDescription(), dependency.getImageName());
         } else
             listener.onDescriptionEmptyError();
     }
