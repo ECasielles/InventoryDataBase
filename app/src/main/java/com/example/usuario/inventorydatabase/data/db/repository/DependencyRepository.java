@@ -1,7 +1,5 @@
 package com.example.usuario.inventorydatabase.data.db.repository;
 
-import android.database.Cursor;
-
 import com.example.usuario.inventorydatabase.data.db.dao.DependencyDao;
 import com.example.usuario.inventorydatabase.data.db.model.Dependency;
 
@@ -17,19 +15,18 @@ import java.util.ArrayList;
  * @see Dependency
  */
 
+//Falta una interfaz común a todos los interactor
 public class DependencyRepository {
 
-    private ArrayList<Dependency> dependencies;
     private static DependencyRepository dependencyRepository;
     //Si hubiera una conexión, habría un dependencyWebService
-    private static DependencyDao dependencyDao;
+    private DependencyDao dependencyDao;
 
     static {
         dependencyRepository = new DependencyRepository();
     }
 
     private DependencyRepository() {
-        this.dependencies = new ArrayList<>();
         dependencyDao = new DependencyDao();
     }
 
@@ -50,45 +47,33 @@ public class DependencyRepository {
     }
 
     //ROMPEMOS LA LÓGICA PARA VER AMBAS OPCIONES
-    /**
-     * OPCION 1: El repositorio devuelve un ArrayList.
-     */
     public ArrayList<Dependency> getDependencies() {
-        dependencies.clear();
-        Cursor cursor = getDependenciesCursor();
-        //El cursor siempre se coloca antes del primer elemento.
-        if(cursor.moveToFirst())
-            do {
-                //Acceder a las columnas en el mismo orden
-                Dependency dependency = new Dependency(cursor.getInt(0),
-                        cursor.getString(1), cursor.getString(2),
-                        cursor.getString(3), cursor.getString(4)
-                );
-                dependencies.add(dependency);
-            } while (cursor.moveToNext());
-        return dependencies;
-    }
-    /**
-     * OPCION 2: El repositorio devuelve un Cursor.
-     */
-    public Cursor getDependenciesCursor() {
         return dependencyDao.loadAll();
     }
 
     public boolean exists(Dependency dependency) {
-        return false;
+        return false; //dependencyDao.dependencies.contains(dependency);
     }
 
     public void editDependency(Dependency dependency, String description) {
 
     }
 
-    public boolean deleteDependency(Dependency dependency) {
-        return false;
+    /**
+     * Devuelve el id del elemento o -1.
+     * @param dependency
+     * @return
+     */
+    public long saveDependency(Dependency dependency) {
+        return dependencyDao.save(dependency);
+    }
+
+    public void deleteDependency(Dependency dependency) {
+        dependencyDao.delete(dependency);
     }
 
     public boolean exists(String name, String shortname) {
-        return false;
+        return dependencyDao.exists(name, shortname);
     }
 
 }

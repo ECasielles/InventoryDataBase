@@ -20,6 +20,7 @@ public class ListDependencyInteractorImpl implements ListDependencyInteractor {
         if(DependencyRepository.getInstance().deleteDependency(dependency))
             //Falta mostrar mensaje cuando se haya eliminado
             listener.onSuccess(DependencyRepository.getInstance().getDependencies());
+        //Se le puede pasar al repositorio una interfaz del interactor.
     }
 
     public void loadDependencies(){

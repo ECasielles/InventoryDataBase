@@ -48,7 +48,7 @@ public class Dependency implements Comparable, Parcelable {
     };
 
 
-    public Dependency(int _ID, String name, String shortname, String description, String imageName) {
+        public Dependency(int _ID, String name, String shortname, String description, String imageName) {
         this._ID = _ID;
         this.name = name;
         this.shortname = shortname;
