@@ -1,5 +1,6 @@
 package com.example.usuario.inventorydatabase.ui.base;
 
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 
 /**
@@ -8,12 +9,24 @@ import android.support.v4.app.Fragment;
 
 public class BaseFragment extends Fragment {
 
-/*    //ProgressDialog
+    /**
+     * Crea un Snackbar con mensaje o id de string
+     *
+     * @param message
+     */
+    public void onError(String message) {
+        Snackbar.make(getActivity().findViewById(android.R.id.content), message,
+                Snackbar.LENGTH_SHORT).show();
+    }
 
-    //private void showSnackbar(String message)
-
-    public void showMessage(String error) {
-
-    }*/
+    /**
+     * Crea un Snackbar con mensaje o id de string
+     *
+     * @param resourceId
+     */
+    public void onError(int resourceId) {
+        Snackbar.make(getActivity().findViewById(android.R.id.content), getResources().getString(resourceId),
+                Snackbar.LENGTH_SHORT).show();
+    }
 
 }

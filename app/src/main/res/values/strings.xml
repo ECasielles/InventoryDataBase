@@ -46,6 +46,7 @@
     <string name="btnOk">Confirmar</string>
     <string name="btnCancel">Cancelar</string>
     <string name="dependency_deleted">Dependencia eliminada</string>
+    <string name="error_db_not_found">No se ha encontrador el elemento</string>
 
 
 </resources>

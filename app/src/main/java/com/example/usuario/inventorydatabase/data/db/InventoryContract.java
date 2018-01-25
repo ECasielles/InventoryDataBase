@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
  */
 public final class InventoryContract {
 
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "Inventory.db";
     //Constructor privado para que no sea instanciada
     private InventoryContract() { }
@@ -28,6 +28,16 @@ public final class InventoryContract {
                 BaseColumns._ID, COLUMN_NAME, COLUMN_SHORTNAME,
                 COLUMN_DESCRIPTION, COLUMN_IMAGENAME
         };
+        public static final String WHERE_ID = String.format(
+                "%s = ?",
+                BaseColumns._ID
+        );
+        public static final String WHERE_NAME_AND_SHORTNAME = String.format(
+                "%s = ? AND %s = ?",
+                COLUMN_NAME,
+                COLUMN_SHORTNAME
+        );
+
         public static final String DEFAULT_SORT = COLUMN_NAME;
 
         //Hay dos opciones
@@ -36,7 +46,7 @@ public final class InventoryContract {
                         "%s TEXT NOT NULL," +
                         "%s TEXT NOT NULL," +
                         "%s TEXT NOT NULL," +
-                        "%s TEXT NOT NULL)",
+                        "%s TEXT)",
                 TABLE_NAME,
                 BaseColumns._ID,
                 COLUMN_NAME,
@@ -85,6 +95,9 @@ public final class InventoryContract {
                 BaseColumns._ID, COLUMN_DEPENDENCY_ID, COLUMN_NAME, COLUMN_SHORTNAME,
                 COLUMN_DESCRIPTION, COLUMN_IMAGEBASE64, COLUMN_IMAGENAME
         };
+
+        public static final String DEFAULT_SORT = COLUMN_NAME;
+
         //Hay dos opciones
         public static final String SQL_CREATE_ENTRIES = String.format(
                 "CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -107,6 +120,7 @@ public final class InventoryContract {
         );
         public static final String SQL_DELETE_ENTRIES = String.format(
                 "DROP TABLE IF EXISTS %s", TABLE_NAME);
+
         public static final String SQL_INSERT_ENTRIES = String.format(
                 "INSERT INTO %s (%s, %s, %s, %s, %s, %s) VALUES ('%s', '%s', '%s', '%s', '%s', '%s'),", TABLE_NAME,
                 COLUMN_DEPENDENCY_ID,
@@ -129,7 +143,6 @@ public final class InventoryContract {
                 "sin imagen",
                 "sin imagen"
         );
-
     }
 
 }

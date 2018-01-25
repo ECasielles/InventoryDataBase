@@ -1,11 +1,10 @@
-package com.example.usuario.inventorydatabase.data.db.model;
+package com.example.usuario.inventorydatabase.data.db;
 
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
-
-import com.example.usuario.inventorydatabase.data.db.InventoryApplication;
-import com.example.usuario.inventorydatabase.data.db.InventoryContract;
+import android.util.Log;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -40,24 +39,41 @@ public class InventoryOpenHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        //Si lo hacemos con Transaction, no se va a crear nada si no está perfecto.
-        //Nos daremos cuenta del error cuando no se cree algo.
-        //Por eso en principio no usaremos atomicidad.
-        sqLiteDatabase.execSQL(InventoryContract.DependencyEntry.SQL_CREATE_ENTRIES);
-        sqLiteDatabase.execSQL(InventoryContract.DependencyEntry.SQL_INSERT_ENTRIES);
-        sqLiteDatabase.execSQL(InventoryContract.SectorEntry.SQL_CREATE_ENTRIES);
-        sqLiteDatabase.execSQL(InventoryContract.SectorEntry.SQL_INSERT_ENTRIES);
+    public void onCreate(SQLiteDatabase db) {
+        try {
+            db.beginTransaction();
+            //Si lo hacemos con Transaction, no se va a crear nada si no está perfecto.
+            //Nos daremos cuenta del error cuando no se cree algo.
+            //Por eso en principio no usaremos atomicidad.
+            db.execSQL(InventoryContract.DependencyEntry.SQL_CREATE_ENTRIES);
+            db.execSQL(InventoryContract.DependencyEntry.SQL_INSERT_ENTRIES);
+            db.execSQL(InventoryContract.SectorEntry.SQL_CREATE_ENTRIES);
+            db.execSQL(InventoryContract.SectorEntry.SQL_INSERT_ENTRIES);
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e("InventoryOpenHelper: ", e.getMessage());
+        } finally {
+            db.endTransaction();
+        }
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        //IMPORTANTE: A la hora de eliminar hay que tener en cuenta el orden por
-        //claves ajenas.
-        //Esta es la forma rápida.
-        sqLiteDatabase.execSQL(InventoryContract.DependencyEntry.SQL_DELETE_ENTRIES);
-        sqLiteDatabase.execSQL(InventoryContract.SectorEntry.SQL_DELETE_ENTRIES);
-        onCreate(sqLiteDatabase);
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        //Transacciones obligatorias. Siempre con try.
+        try {
+            db.beginTransaction();
+            //IMPORTANTE: A la hora de eliminar hay que tener en cuenta el orden por
+            //claves ajenas.
+            //Esta es la forma rápida.
+            sqLiteDatabase.execSQL(InventoryContract.DependencyEntry.SQL_DELETE_ENTRIES);
+            sqLiteDatabase.execSQL(InventoryContract.SectorEntry.SQL_DELETE_ENTRIES);
+            onCreate(sqLiteDatabase);
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e("InventoryOpenHelper: ", e.getMessage());
+        } finally {
+            db.endTransaction();
+        }
     }
 
     /**

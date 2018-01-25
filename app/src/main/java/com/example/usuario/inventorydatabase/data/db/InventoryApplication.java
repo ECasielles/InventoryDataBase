@@ -2,7 +2,6 @@ package com.example.usuario.inventorydatabase.data.db;
 
 import android.app.Application;
 
-import com.example.usuario.inventorydatabase.data.db.model.InventoryOpenHelper;
 import com.example.usuario.inventorydatabase.data.prefs.AppPreferencesHelper;
 
 /**
@@ -25,19 +24,19 @@ public class InventoryApplication extends Application {
         context = this;
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        appPreferencesHelper = AppPreferencesHelper.getInstance();
-        InventoryOpenHelper.getInstance().openDatabase();
-    }
-
     public static AppPreferencesHelper getAppPreferencesHelper() {
         return appPreferencesHelper;
     }
 
     public static InventoryApplication getContext() {
         return context;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        appPreferencesHelper = AppPreferencesHelper.getInstance();
+        InventoryOpenHelper.getInstance().openDatabase();
     }
 
 }

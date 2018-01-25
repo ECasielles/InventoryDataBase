@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -16,13 +15,13 @@ import android.widget.EditText;
 
 import com.example.usuario.inventorydatabase.R;
 import com.example.usuario.inventorydatabase.data.db.model.Dependency;
-import com.example.usuario.inventorydatabase.ui.base.BasePresenter;
+import com.example.usuario.inventorydatabase.ui.base.BaseFragment;
 import com.example.usuario.inventorydatabase.ui.dependency.contract.AddEditDependencyContract;
 import com.example.usuario.inventorydatabase.ui.dependency.presenter.AddEditDependencyPresenter;
 import com.example.usuario.inventorydatabase.utils.AddEdit;
 
 
-public class AddEditDependencyFragment extends Fragment implements AddEditDependencyContract.View {
+public class AddEditDependencyFragment extends BaseFragment implements AddEditDependencyContract.View {
 
     public static final String TAG = "AddEditDependencyFragment";
     private AddEditDependencyContract.Presenter presenter;
@@ -31,11 +30,6 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
     private TextInputLayout tilName, tilShortName, tilDescription;
     private EditText edtName, edtShortName, edtDescription;
     private AddEdit addEditMode;
-
-    //INTERFAZ COMUNICACION CON ACTIVITY/FRAGMENT
-    public interface AddEditDependencyListener {
-        void listDependency();
-    }
 
     //CONSTRUCTOR
     public static AddEditDependencyFragment newInstance(Bundle arguments) {
@@ -56,6 +50,7 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
             throw new ClassCastException(getActivity().getLocalClassName() + " must implements ListDepedencyListener");
         }
     }
+
     @SuppressLint("LongLogTag")
     @Nullable
     @Override
@@ -137,6 +132,7 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
 
         return rootView;
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -162,6 +158,7 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
         super.onSaveInstanceState(outState);
         outState.putSerializable(AddEditDependencyPresenter.TAG, presenter);
     }
+
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
@@ -171,8 +168,8 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
 
     //COMUNICACION MVPI
     @Override
-    public void setPresenter(BasePresenter presenter) {
-        this.presenter = (AddEditDependencyContract.Presenter) presenter;
+    public void setPresenter(AddEditDependencyContract.Presenter presenter) {
+        this.presenter = presenter;
     }
 
     @Override
@@ -185,21 +182,25 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
     public void setNameEmptyError() {
         tilName.setError(getResources().getString(R.string.errorDependencyNameEmptyError));
     }
+
     @Override
     public void setShortNameEmptyError() {
         tilShortName.setError(getResources().getString(R.string.errorDependencyShortNameEmptyError));
     }
+
     @Override
     public void setShortNameLengthError() {
         tilShortName.setError(getResources().getString(R.string.errorDependencyShortNameLengthError));
     }
+
     @Override
     public void setDescriptionEmptyError() {
         tilDescription.setError(getResources().getString(R.string.errorDependencyDescriptionEmptyError));
     }
-    @Override
-    public void setValidateDependencyError() {
 
+    @Override
+    public void setDatabaseError(String message) {
+        onError(message);
     }
 
     //CICLO DE VIDA: FIN
@@ -208,9 +209,15 @@ public class AddEditDependencyFragment extends Fragment implements AddEditDepend
         super.onDetach();
         callback = null;
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         presenter.onDestroy();
+    }
+
+    //INTERFAZ COMUNICACION CON ACTIVITY/FRAGMENT
+    public interface AddEditDependencyListener {
+        void listDependency();
     }
 }

@@ -2,6 +2,8 @@ package com.example.usuario.inventorydatabase.data.db.repository;
 
 import com.example.usuario.inventorydatabase.data.db.dao.DependencyDao;
 import com.example.usuario.inventorydatabase.data.db.model.Dependency;
+import com.example.usuario.inventorydatabase.ui.dependency.interactor.DependencyCallback;
+import com.example.usuario.inventorydatabase.utils.Error;
 
 import java.util.ArrayList;
 
@@ -19,12 +21,13 @@ import java.util.ArrayList;
 public class DependencyRepository {
 
     private static DependencyRepository dependencyRepository;
-    //Si hubiera una conexión, habría un dependencyWebService
-    private DependencyDao dependencyDao;
 
     static {
         dependencyRepository = new DependencyRepository();
     }
+
+    //Si hubiera una conexión, habría un dependencyWebService
+    private DependencyDao dependencyDao;
 
     private DependencyRepository() {
         dependencyDao = new DependencyDao();
@@ -41,35 +44,38 @@ public class DependencyRepository {
         return dependencyRepository;
     }
 
-
-    public void addDependency(Dependency dependency) {
-
-    }
-
-    //ROMPEMOS LA LÓGICA PARA VER AMBAS OPCIONES
     public ArrayList<Dependency> getDependencies() {
         return dependencyDao.loadAll();
     }
 
-    public boolean exists(Dependency dependency) {
-        return false; //dependencyDao.dependencies.contains(dependency);
-    }
-
-    public void editDependency(Dependency dependency, String description) {
-
+    public void updateDependency(Dependency dependency, DependencyCallback callback) {
+        int result = dependencyDao.update(dependency);
+        if (result == 0) {
+            callback.onError(new Error(Error.NOT_FOUND));
+        } else
+            callback.onSuccess();
     }
 
     /**
-     * Devuelve el id del elemento o -1.
+     * Devuelve el id del elemento añadido o -1.
      * @param dependency
      * @return
      */
-    public long saveDependency(Dependency dependency) {
-        return dependencyDao.save(dependency);
+    public void addDependency(Dependency dependency, DependencyCallback callback) {
+        long id = dependencyDao.add(dependency);
+        if (id == -1)
+            callback.onError(new Error(Error.NOT_FOUND));
+        else
+            callback.onSuccess();
     }
 
-    public void deleteDependency(Dependency dependency) {
+    public void deleteDependency(Dependency dependency, DependencyCallback callback) {
         dependencyDao.delete(dependency);
+        int result = dependencyDao.delete(dependency);
+        if (result == 0)
+            callback.onError(new Error(Error.NOT_FOUND));
+        else
+            callback.onSuccess();
     }
 
     public boolean exists(String name, String shortname) {

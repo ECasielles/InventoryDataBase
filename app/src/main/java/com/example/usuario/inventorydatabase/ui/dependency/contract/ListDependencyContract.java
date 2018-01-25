@@ -2,7 +2,6 @@ package com.example.usuario.inventorydatabase.ui.dependency.contract;
 
 import com.example.usuario.inventorydatabase.data.db.model.Dependency;
 import com.example.usuario.inventorydatabase.ui.base.BasePresenter;
-import com.example.usuario.inventorydatabase.ui.base.BaseView;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,7 +11,9 @@ import java.util.List;
  */
 public interface ListDependencyContract {
 
-    interface View extends BaseView {
+    interface View {
+        void setPresenter(ListDependencyContract.Presenter presenter);
+
         void showDependency(List listDependencyInteractor);
 
         Dependency getDependency(int position);
@@ -20,6 +21,9 @@ public interface ListDependencyContract {
         void showDeletedMessage();
         void showMessage(String message);
 
+        void showProgressDialog();
+
+        void dismissProgressDialog();
     }
 
     interface Presenter extends BasePresenter, Serializable {
@@ -35,7 +39,6 @@ public interface ListDependencyContract {
         void deleteSelection();
         void clearSelection();
         boolean getPositionChecked(int position);
-
     }
 
 }

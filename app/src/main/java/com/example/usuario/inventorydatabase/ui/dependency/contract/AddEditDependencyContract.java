@@ -2,7 +2,6 @@ package com.example.usuario.inventorydatabase.ui.dependency.contract;
 
 import com.example.usuario.inventorydatabase.data.db.model.Dependency;
 import com.example.usuario.inventorydatabase.ui.base.BasePresenter;
-import com.example.usuario.inventorydatabase.ui.base.BaseView;
 
 import java.io.Serializable;
 
@@ -12,13 +11,15 @@ import java.io.Serializable;
 
 public interface AddEditDependencyContract {
 
-    interface View extends BaseView {
+    interface View {
+        void setPresenter(AddEditDependencyContract.Presenter presenter);
         void navigateToListDependency();
         void setNameEmptyError();
         void setShortNameEmptyError();
         void setShortNameLengthError();
         void setDescriptionEmptyError();
-        void setValidateDependencyError();
+
+        void setDatabaseError(String message);
     }
     interface Presenter extends BasePresenter, Serializable {
         void saveDependency(String name, String shortName, String description, String imageName);

@@ -4,6 +4,7 @@ import com.example.usuario.inventorydatabase.data.db.model.Dependency;
 import com.example.usuario.inventorydatabase.ui.dependency.contract.ListDependencyContract;
 import com.example.usuario.inventorydatabase.ui.dependency.interactor.ListDependencyInteractor;
 import com.example.usuario.inventorydatabase.ui.dependency.interactor.ListDependencyInteractorImpl;
+import com.example.usuario.inventorydatabase.utils.Error;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,9 +16,10 @@ import java.util.List;
 public class ListDependencyPresenter implements ListDependencyContract.Presenter,
         ListDependencyInteractor.OnLoadFinishedListener {
     public static final String TAG = "ListDependencyPresenter";
+    //COMUNICACION CON MENU SELECCION MULTIPLE
+    HashMap<Integer, Boolean> selection = new HashMap<>();
     private ListDependencyContract.View view;
     private ListDependencyInteractorImpl interactor;
-
 
     public ListDependencyPresenter(ListDependencyContract.View view) {
         this.view = view;
@@ -31,6 +33,7 @@ public class ListDependencyPresenter implements ListDependencyContract.Presenter
     public void loadDependencies() {
         //Aquí pondría un progressBar y mensajes
         interactor.loadDependencies();
+        view.showProgressDialog();
     }
 
     @Override
@@ -49,8 +52,12 @@ public class ListDependencyPresenter implements ListDependencyContract.Presenter
         view.showDependency(dependencies);
     }
 
-    //COMUNICACION CON MENU SELECCION MULTIPLE
-    HashMap<Integer, Boolean> selection = new HashMap<>();
+    @Override
+    public void onDatabaseError(Error error) {
+        view.dismissProgressDialog();
+        view.showMessage(error.getMessage());
+    }
+
     @Override
     public void setNewSelection(int position) {
         selection.put(position, true);

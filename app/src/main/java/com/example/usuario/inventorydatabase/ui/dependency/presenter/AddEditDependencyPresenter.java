@@ -1,9 +1,10 @@
 package com.example.usuario.inventorydatabase.ui.dependency.presenter;
 
 import com.example.usuario.inventorydatabase.data.db.model.Dependency;
-import com.example.usuario.inventorydatabase.ui.dependency.interactor.AddEditDependencyInteractor;
 import com.example.usuario.inventorydatabase.ui.dependency.contract.AddEditDependencyContract;
+import com.example.usuario.inventorydatabase.ui.dependency.interactor.AddEditDependencyInteractor;
 import com.example.usuario.inventorydatabase.ui.dependency.interactor.AddEditDependencyInteractorImpl;
+import com.example.usuario.inventorydatabase.utils.Error;
 
 /**
  * Created by usuario on 23/11/17.
@@ -28,6 +29,7 @@ public class AddEditDependencyPresenter implements AddEditDependencyContract.Pre
 
     @Override
     public void editDependency(Dependency dependency, String description) {
+        dependency.setDescription(description);
         interactor.editDependency(dependency, description);
     }
 
@@ -48,9 +50,13 @@ public class AddEditDependencyPresenter implements AddEditDependencyContract.Pre
         view.setDescriptionEmptyError();
     }
     @Override
-    public void onSuccess(String name, String shortname, String description, String imageName) {
-        interactor.addDependency(name, shortname, description, imageName);
+    public void onSuccess() {
         view.navigateToListDependency();
+    }
+
+    @Override
+    public void onDatabaseError(Error error) {
+        view.setDatabaseError(error.getMessage());
     }
 
     /**

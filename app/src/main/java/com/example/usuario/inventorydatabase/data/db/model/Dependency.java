@@ -14,13 +14,6 @@ import java.util.Comparator;
  * @see java.lang.Comparable
  */
 public class Dependency implements Comparable, Parcelable {
-    private int _ID;
-    private String name;
-    private String shortname;
-    private String description;
-    private String imageName;
-    public static String TAG = "Dependency";
-
     //Forma alternativa de declarar los Comparator
     public static final Comparator<Dependency> COMPARATOR_ID = new Comparator<Dependency>() {
         @Override
@@ -46,9 +39,25 @@ public class Dependency implements Comparable, Parcelable {
             return -1 * dependency.getName().compareToIgnoreCase(dependency2.getName());
         }
     };
+    public static final Creator<Dependency> CREATOR = new Creator<Dependency>() {
+        @Override
+        public Dependency createFromParcel(Parcel in) {
+            return new Dependency(in);
+        }
 
+        @Override
+        public Dependency[] newArray(int size) {
+            return new Dependency[size];
+        }
+    };
+    public static String TAG = "Dependency";
+    private int _ID;
+    private String name;
+    private String shortname;
+    private String description;
+    private String imageName;
 
-        public Dependency(int _ID, String name, String shortname, String description, String imageName) {
+    public Dependency(int _ID, String name, String shortname, String description, String imageName) {
         this._ID = _ID;
         this.name = name;
         this.shortname = shortname;
@@ -64,18 +73,6 @@ public class Dependency implements Comparable, Parcelable {
         description = in.readString();
         imageName = in.readString();
     }
-
-    public static final Creator<Dependency> CREATOR = new Creator<Dependency>() {
-        @Override
-        public Dependency createFromParcel(Parcel in) {
-            return new Dependency(in);
-        }
-
-        @Override
-        public Dependency[] newArray(int size) {
-            return new Dependency[size];
-        }
-    };
 
     public int get_ID() {
         return _ID;

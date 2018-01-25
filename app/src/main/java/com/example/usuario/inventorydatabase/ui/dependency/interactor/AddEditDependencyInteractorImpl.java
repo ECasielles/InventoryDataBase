@@ -2,6 +2,7 @@ package com.example.usuario.inventorydatabase.ui.dependency.interactor;
 
 import com.example.usuario.inventorydatabase.data.db.model.Dependency;
 import com.example.usuario.inventorydatabase.data.db.repository.DependencyRepository;
+import com.example.usuario.inventorydatabase.utils.Error;
 
 /**
  * Created by usuario on 27/11/17.
@@ -27,23 +28,31 @@ public class AddEditDependencyInteractorImpl implements AddEditDependencyInterac
         else if (description.isEmpty())
             listener.onDescriptionEmptyError();
         else if (DependencyRepository.getInstance().exists(name, shortname))
-            listener.onSuccess(name, shortname, description, imageName);
+            addDependency(name, shortname, description, imageName);
     }
 
     @Override
     public void addDependency(String name, String shortname, String description, String imageName) {
         Dependency dependency = new Dependency(-1, name, shortname, description, imageName);
-        DependencyRepository.getInstance().addDependency(dependency);
+        DependencyRepository.getInstance().addDependency(dependency, this);
     }
 
     @Override
     public void editDependency(Dependency dependency, String description) {
-        if(!description.isEmpty()) {
-            DependencyRepository.getInstance().editDependency(dependency, description);
-            listener.onSuccess(dependency.getName(), dependency.getShortname(), dependency.getDescription(), dependency.getImageName());
-        } else
+        if (!description.isEmpty())
+            DependencyRepository.getInstance().updateDependency(dependency, this);
+        else
             listener.onDescriptionEmptyError();
     }
 
+    @Override
+    public void onSuccess() {
+        listener.onSuccess();
+    }
+
+    @Override
+    public void onError(Error error) {
+        listener.onDatabaseError(error);
+    }
 
 }

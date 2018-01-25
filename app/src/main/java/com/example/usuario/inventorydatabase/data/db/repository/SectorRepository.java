@@ -1,5 +1,6 @@
 package com.example.usuario.inventorydatabase.data.db.repository;
 
+import com.example.usuario.inventorydatabase.data.db.dao.SectorDao;
 import com.example.usuario.inventorydatabase.data.db.model.Sector;
 
 import java.util.ArrayList;
@@ -8,100 +9,48 @@ import java.util.ArrayList;
  * Almacena las distintas secciones donde guardar elementos del inventario
  *
  * @author Enrique Casielles Lapeira
- * @version 1.0
+ * @version 2.0
  * @see Sector
  */
 public class SectorRepository {
 
-    /*DECLARACIÓN*/
-    private ArrayList<Sector> sectors;
     private static SectorRepository sectorRepository;
 
-    /*INICIALIZACIÓN*/
-    //De esta forma inicializa los atributos de ámbito estático o de clase
-    //Es la forma alternativa aunque puede ser costoso y se puede evitar
-    static { sectorRepository = new SectorRepository(); }
+    static {
+        sectorRepository = new SectorRepository();
+    }
 
-    /**
-     * Constructor privado que garantiza una instancia única de la clase
-     */
+    private SectorDao sectorDao;
+
     private SectorRepository() {
-        this.sectors = new ArrayList<>();
-        initialize();
+        sectorDao = new SectorDao();
     }
 
-    /*MÉTODOS*/
-
-    /**
-     * Inicializa la estructura de datos DependencyRepository
-     */
-    private void initialize() {
-        addSector(new Sector(1, "Armario Izquierda del aula de DAM1", "ArmIzqDAM1",
-                "Armario del aula de DAM1 que se encuentra a la izquierda de la puerta",
-                1, true, true));
-        addSector(new Sector(2, "Armario Izquierda del aula de DAM2", "ArmIzqDAM2",
-                "Armario del aula de DAM2 que se encuentra a la izquierda de la puerta",
-                2, true, false));
-        addSector(new Sector(1, "Armario Izquierda del aula de DAM1", "ArmIzqDAM1",
-                "Armario del aula de DAM1 que se encuentra a la izquierda de la puerta",
-                1, true, true));
-        addSector(new Sector(2, "Armario Izquierda del aula de DAM2", "ArmIzqDAM2",
-                "Armario del aula de DAM2 que se encuentra a la izquierda de la puerta",
-                2, true, false));
-        addSector(new Sector(1, "Armario Izquierda del aula de DAM1", "ArmIzqDAM1",
-                "Armario del aula de DAM1 que se encuentra a la izquierda de la puerta",
-                1, true, true));
-        addSector(new Sector(2, "Armario Izquierda del aula de DAM2", "ArmIzqDAM2",
-                "Armario del aula de DAM2 que se encuentra a la izquierda de la puerta",
-                2, true, false));
-        addSector(new Sector(1, "Armario Izquierda del aula de DAM1", "ArmIzqDAM1",
-                "Armario del aula de DAM1 que se encuentra a la izquierda de la puerta",
-                1, true, true));
-        addSector(new Sector(2, "Armario Izquierda del aula de DAM2", "ArmIzqDAM2",
-                "Armario del aula de DAM2 que se encuentra a la izquierda de la puerta",
-                2, true, false));
-        addSector(new Sector(1, "Armario Izquierda del aula de DAM1", "ArmIzqDAM1",
-                "Armario del aula de DAM1 que se encuentra a la izquierda de la puerta",
-                1, true, true));
-        addSector(new Sector(2, "Armario Izquierda del aula de DAM2", "ArmIzqDAM2",
-                "Armario del aula de DAM2 que se encuentra a la izquierda de la puerta",
-                2, true, false));
-        addSector(new Sector(1, "Armario Izquierda del aula de DAM1", "ArmIzqDAM1",
-                "Armario del aula de DAM1 que se encuentra a la izquierda de la puerta",
-                1, true, true));
-        addSector(new Sector(2, "Armario Izquierda del aula de DAM2", "ArmIzqDAM2",
-                "Armario del aula de DAM2 que se encuentra a la izquierda de la puerta",
-                2, true, false));
-        addSector(new Sector(1, "Armario Izquierda del aula de DAM1", "ArmIzqDAM1",
-                "Armario del aula de DAM1 que se encuentra a la izquierda de la puerta",
-                1, true, true));
-        addSector(new Sector(2, "Armario Izquierda del aula de DAM2", "ArmIzqDAM2",
-                "Armario del aula de DAM2 que se encuentra a la izquierda de la puerta",
-                2, true, false));
-    }
-    /**
-     * Accesor de la clase SectorRepository
-     * @return Devuelve la instancia de la clase como objeto SectorRepository
-     */
     public static SectorRepository getInstance(){
-        //Nunca va a valer null si no se hace inicialización estática
         if(sectorRepository == null)
             sectorRepository = new SectorRepository();
         return sectorRepository;
     }
-    /**
-     * Método que añade un nuevo sector
-     * @param sector Objeto de clase Sector
-     */
-    private void addSector(Sector sector) {
-        sectors.add(sector);
-    }
-    /**
-     * Devuelve la referencia al objeto
-     * @return referencia al objeto ArrayList
-     */
+
     public ArrayList<Sector> getSectors() {
-        return sectors;
+        return sectorDao.loadAll();
     }
+
+    private void addSector(Sector sector) {
+        sectorDao.add(sector);
+    }
+
+    private void updateSector(Sector sector) {
+        sectorDao.update(sector);
+    }
+
+    private void deleteSector(Sector sector) {
+        sectorDao.delete(sector);
+    }
+
+    private boolean exists(Sector sector) {
+        return sectorDao.exists(sector);
+    }
+
 
 }
