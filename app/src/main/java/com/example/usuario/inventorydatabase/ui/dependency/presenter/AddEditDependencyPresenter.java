@@ -49,11 +49,11 @@ public class AddEditDependencyPresenter implements AddEditDependencyContract.Pre
     public void onDescriptionEmptyError() {
         view.setDescriptionEmptyError();
     }
+
     @Override
     public void onSuccess() {
         view.navigateToListDependency();
     }
-
     @Override
     public void onDatabaseError(Error error) {
         view.setDatabaseError(error.getMessage());

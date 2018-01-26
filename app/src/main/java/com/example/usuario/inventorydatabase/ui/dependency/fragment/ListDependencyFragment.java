@@ -82,9 +82,7 @@ public class ListDependencyFragment extends ListFragment implements ListDependen
 
         //Como se encuentra en el Fragment usamos rootView
         fab = rootView.findViewById(R.id.fab);
-        presenter.loadDependencies();
 
-        progressDialog = new ProgressDialog(getContext());
         return rootView;
     }
 
@@ -98,6 +96,7 @@ public class ListDependencyFragment extends ListFragment implements ListDependen
         super.onViewCreated(view, savedInstanceState);
         //No se puede añadir el adaptador en el onCreateView porque aún no existe la vista
         setListAdapter(adapter);
+        presenter.loadDependencies();
 
         //Le asignamos un menú contextual a la lista (viewGroup)
         //Hay que hacerlo aquí porque antes no está creada la vista
@@ -216,7 +215,7 @@ public class ListDependencyFragment extends ListFragment implements ListDependen
      */
     @Override
     public void setPresenter(ListDependencyContract.Presenter presenter) {
-        this.presenter = (ListDependencyContract.Presenter) presenter;
+        this.presenter = presenter;
     }
 
     //COMUNICACION ENTRE CLASES MVPI
@@ -224,13 +223,13 @@ public class ListDependencyFragment extends ListFragment implements ListDependen
     /**
      * Este método es el que usa la vista para cargar los datos del repositorio
      * a través del esquema MVP
-     * @param listDependencyInteractor
+     * @param dependencies
      */
     @Override
-    public void showDependency(List listDependencyInteractor) {
+    public void showDependency(List<Dependency> dependencies) {
         //Limpio el adaptador por si hubiera datos anteriores
         adapter.clear();
-        adapter.addAll(listDependencyInteractor);
+        adapter.addAll(dependencies);
     }
 
     @Override
@@ -242,14 +241,11 @@ public class ListDependencyFragment extends ListFragment implements ListDependen
     public void showProgressDialog() {
         progressDialog = CommonUtils.showLoadDialog(getContext());
     }
-
     @Override
     public void dismissProgressDialog() {
         progressDialog.dismiss();
     }
 
-    //Elimina métodos vía selección múltiple
-    //Comprobar si es posible hacerlo directamente desde el presenter
     @Override
     public Dependency getDependency(int position) {
         return (Dependency) getListView().getItemAtPosition(position);
@@ -260,20 +256,12 @@ public class ListDependencyFragment extends ListFragment implements ListDependen
         showMessage(getResources().getString(R.string.dependency_deleted));
     }
 
-    /**
-     * Se llama cuando se elimina la unión Activity-Fragmnent cuando la Activity se elimine
-     */
     @Override
     public void onDetach() {
         super.onDetach();
         callback = null;
     }
 
-    //CICLO DE VIDA: FIN
-
-    /**
-     * Se llama cuando se destruya la Activity
-     */
     @Override
     public void onDestroy() {
         super.onDestroy();

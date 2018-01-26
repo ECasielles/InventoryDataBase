@@ -12,12 +12,11 @@ import java.util.List;
 public interface ListDependencyInteractor extends DependencyCallback {
 
     void deleteDependency(Dependency dependency);
-
     void loadDependencies();
 
     interface OnLoadFinishedListener {
         void onSuccess(List<Dependency> dependencies);
-
         void onDatabaseError(Error error);
     }
+
 }

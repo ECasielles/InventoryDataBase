@@ -1,5 +1,7 @@
 package com.example.usuario.inventorydatabase.ui.dependency.presenter;
 
+import android.os.AsyncTask;
+
 import com.example.usuario.inventorydatabase.data.db.model.Dependency;
 import com.example.usuario.inventorydatabase.ui.dependency.contract.ListDependencyContract;
 import com.example.usuario.inventorydatabase.ui.dependency.interactor.ListDependencyInteractor;
@@ -9,9 +11,6 @@ import com.example.usuario.inventorydatabase.utils.Error;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by usuario on 23/11/17.
- */
 
 public class ListDependencyPresenter implements ListDependencyContract.Presenter,
         ListDependencyInteractor.OnLoadFinishedListener {
@@ -26,35 +25,44 @@ public class ListDependencyPresenter implements ListDependencyContract.Presenter
         this.interactor = new ListDependencyInteractorImpl(this);
     }
 
-    /**
-     * Carga los datos
-     */
     @Override
     public void loadDependencies() {
-        //Aquí pondría un progressBar y mensajes
-        interactor.loadDependencies();
-        view.showProgressDialog();
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected void onPreExecute() {
+                view.showProgressDialog();
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                interactor.loadDependencies();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                view.dismissProgressDialog();
+            }
+        }.execute();
     }
 
+    @Override
+    public void onSuccess(List<Dependency> dependencies) {
+        view.showDependency(dependencies);
+    }
     @Override
     public void deleteDependency(Dependency dependency) {
         interactor.deleteDependency(dependency);
         view.showDeletedMessage();
     }
-
-    /**
-     * Es llamado por el interactor cuando el listado de dependencias esté listo.
-     * Después avisa a la vista.
-     * @param dependencies
-     */
-    @Override
-    public void onSuccess(List<Dependency> dependencies) {
-        view.showDependency(dependencies);
-    }
-
     @Override
     public void onDatabaseError(Error error) {
-        view.dismissProgressDialog();
         view.showMessage(error.getMessage());
     }
 
@@ -70,27 +78,16 @@ public class ListDependencyPresenter implements ListDependencyContract.Presenter
     public void clearSelection() {
         selection.clear();
     }
-    /**
-     * Elimina los elementos seleccionados
-     */
     @Override
     public void deleteSelection() {
         for (Integer position: selection.keySet())
             deleteDependency(view.getDependency(position));
     }
-    /**
-     * Comprueba si el elemento existe en la selección múltiple.
-     * @param position
-     * @return
-     */
     @Override
     public boolean getPositionChecked(int position) {
         return selection.containsKey(position);
     }
 
-    /**
-     * Se eliminan las referencias del presentador
-     */
     @Override
     public void onDestroy() {
         view = null;

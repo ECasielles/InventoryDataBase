@@ -22,7 +22,7 @@ public interface AddEditDependencyInteractor extends DependencyCallback {
         void onDescriptionEmptyError();
 
         void onSuccess();
-
         void onDatabaseError(Error error);
     }
+
 }

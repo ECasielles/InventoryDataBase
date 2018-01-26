@@ -65,9 +65,9 @@ public class InventoryOpenHelper extends SQLiteOpenHelper {
             //IMPORTANTE: A la hora de eliminar hay que tener en cuenta el orden por
             //claves ajenas.
             //Esta es la forma rápida.
-            sqLiteDatabase.execSQL(InventoryContract.DependencyEntry.SQL_DELETE_ENTRIES);
-            sqLiteDatabase.execSQL(InventoryContract.SectorEntry.SQL_DELETE_ENTRIES);
-            onCreate(sqLiteDatabase);
+            db.execSQL(InventoryContract.DependencyEntry.SQL_DELETE_ENTRIES);
+            db.execSQL(InventoryContract.SectorEntry.SQL_DELETE_ENTRIES);
+            onCreate(db);
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             Log.e("InventoryOpenHelper: ", e.getMessage());

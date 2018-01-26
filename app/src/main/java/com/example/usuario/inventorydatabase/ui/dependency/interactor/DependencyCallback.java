@@ -9,7 +9,6 @@ import com.example.usuario.inventorydatabase.utils.Error;
 public interface DependencyCallback {
 
     void onSuccess();
-
     void onError(Error error);
 
 }
