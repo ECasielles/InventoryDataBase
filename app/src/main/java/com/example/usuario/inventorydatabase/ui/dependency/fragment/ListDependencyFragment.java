@@ -226,7 +226,7 @@ public class ListDependencyFragment extends ListFragment implements ListDependen
      * @param dependencies
      */
     @Override
-    public void showDependency(List<Dependency> dependencies) {
+    public void showDependencies(List<Dependency> dependencies) {
         //Limpio el adaptador por si hubiera datos anteriores
         adapter.clear();
         adapter.addAll(dependencies);

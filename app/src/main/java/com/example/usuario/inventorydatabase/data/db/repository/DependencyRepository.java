@@ -70,7 +70,6 @@ public class DependencyRepository {
     }
 
     public void deleteDependency(Dependency dependency, DependencyCallback callback) {
-        dependencyDao.delete(dependency);
         int result = dependencyDao.delete(dependency);
         if (result == 0)
             callback.onError(new Error(Error.NOT_FOUND));

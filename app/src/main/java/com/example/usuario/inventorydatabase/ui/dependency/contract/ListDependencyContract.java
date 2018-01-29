@@ -14,7 +14,7 @@ public interface ListDependencyContract {
     interface View {
         void setPresenter(ListDependencyContract.Presenter presenter);
 
-        void showDependency(List<Dependency> dependencies);
+        void showDependencies(List<Dependency> dependencies);
 
         Dependency getDependency(int position);
 

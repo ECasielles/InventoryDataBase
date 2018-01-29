@@ -4,8 +4,10 @@ import com.example.usuario.inventorydatabase.data.db.model.Dependency;
 import com.example.usuario.inventorydatabase.data.db.repository.DependencyRepository;
 import com.example.usuario.inventorydatabase.utils.Error;
 
+import java.util.ArrayList;
+
 /**
- * Created by usuario on 27/11/17.
+ * Interactor de ListDependencyFragment. Controla la comunicación con el repositorio.
  */
 public class ListDependencyInteractorImpl implements ListDependencyInteractor {
 
@@ -18,19 +20,20 @@ public class ListDependencyInteractorImpl implements ListDependencyInteractor {
     @Override
     public void deleteDependency(Dependency dependency) {
         DependencyRepository.getInstance().deleteDependency(dependency, this);
-        listener.onSuccess(DependencyRepository.getInstance().getDependencies());
     }
-    public void loadDependencies(){
-        listener.onSuccess(DependencyRepository.getInstance().getDependencies());
+
+    public ArrayList<Dependency> loadDependencies() {
+        return DependencyRepository.getInstance().getDependencies();
     }
     @Override
     public void onSuccess() {
-        listener.onSuccess(DependencyRepository.getInstance().getDependencies());
+        listener.onDependencyDeleted();
     }
 
     @Override
     public void onError(Error error) {
         listener.onDatabaseError(error);
     }
+
 
 }

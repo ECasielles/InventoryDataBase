@@ -3,6 +3,7 @@ package com.example.usuario.inventorydatabase.data.db.dao;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.usuario.inventorydatabase.data.db.InventoryContract;
@@ -72,13 +73,19 @@ public class DependencyDao {
     }
 
     public int delete(Dependency dependency) {
-        SQLiteDatabase sqLiteDatabase = InventoryOpenHelper.getInstance().openDatabase();
-        String[] whereArgs = new String[]{dependency.get_ID() + ""};
-        return sqLiteDatabase.delete(
-          InventoryContract.DependencyEntry.TABLE_NAME,
-                InventoryContract.DependencyEntry.WHERE_ID,
-                whereArgs
-        );
+        int result;
+        try {
+            SQLiteDatabase sqLiteDatabase = InventoryOpenHelper.getInstance().openDatabase();
+            String[] whereArgs = new String[]{dependency.get_ID() + ""};
+            result = sqLiteDatabase.delete(
+                    InventoryContract.DependencyEntry.TABLE_NAME,
+                    InventoryContract.DependencyEntry.WHERE_ID,
+                    whereArgs
+            );
+            return result;
+        } catch (SQLException e) {
+            return 0;
+        }
     }
 
     public boolean exists(String name, String shortname) {

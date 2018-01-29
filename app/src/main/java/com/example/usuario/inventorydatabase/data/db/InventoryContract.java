@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
  */
 public final class InventoryContract {
 
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Inventory.db";
     //Constructor privado para que no sea instanciada
     private InventoryContract() { }
@@ -66,8 +66,28 @@ public final class InventoryContract {
                 "2CFGS",
                 "Aula de los resopladores de 2CFGS",
                 "sin imagen"
-        ) + String.format("('%s', '%s', '%s', '%s')",
+        ) + String.format("('%s', '%s', '%s', '%s'),",
                 "Aula de 1CFGS",
+                "1CFGS",
+                "Aula de los pardillos de 1CFGS",
+                "sin imagen"
+        ) + String.format("('%s', '%s', '%s', '%s'),",
+                "Aula de TEST",
+                "1CFGS",
+                "Aula de los pardillos de 1CFGS",
+                "sin imagen"
+        ) + String.format("('%s', '%s', '%s', '%s'),",
+                "Aula de TEST",
+                "1CFGS",
+                "Aula de los pardillos de 1CFGS",
+                "sin imagen"
+        ) + String.format("('%s', '%s', '%s', '%s'),",
+                "Aula de TEST",
+                "1CFGS",
+                "Aula de los pardillos de 1CFGS",
+                "sin imagen"
+        ) + String.format("('%s', '%s', '%s', '%s')",
+                "Aula de TEST",
                 "1CFGS",
                 "Aula de los pardillos de 1CFGS",
                 "sin imagen"

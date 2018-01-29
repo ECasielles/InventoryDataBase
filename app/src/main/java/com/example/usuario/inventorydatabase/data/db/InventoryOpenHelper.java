@@ -58,6 +58,24 @@ public class InventoryOpenHelper extends SQLiteOpenHelper {
     }
 
     @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        try {
+            db.beginTransaction();
+            //IMPORTANTE: A la hora de eliminar hay que tener en cuenta el orden por
+            //claves ajenas.
+            //Esta es la forma rápida.
+            db.execSQL(InventoryContract.DependencyEntry.SQL_DELETE_ENTRIES);
+            db.execSQL(InventoryContract.SectorEntry.SQL_DELETE_ENTRIES);
+            onCreate(db);
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e("InventoryOpenHelper: ", e.getMessage());
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //Transacciones obligatorias. Siempre con try.
         try {
