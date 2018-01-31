@@ -1,5 +1,7 @@
 package com.example.usuario.inventorydatabase.ui.dependency.interactor;
 
+import android.os.AsyncTask;
+
 import com.example.usuario.inventorydatabase.data.db.model.Dependency;
 import com.example.usuario.inventorydatabase.data.db.repository.DependencyRepository;
 import com.example.usuario.inventorydatabase.utils.Error;
@@ -20,11 +22,13 @@ public class ListDependencyInteractorImpl implements ListDependencyInteractor {
     @Override
     public void deleteDependency(Dependency dependency) {
         DependencyRepository.getInstance().deleteDependency(dependency, this);
+        new ListDependencyInteractorAsyncTask(listener).execute();
     }
 
-    public ArrayList<Dependency> loadDependencies() {
-        return DependencyRepository.getInstance().getDependencies();
+    public void loadDependencies() {
+        new ListDependencyInteractorAsyncTask(listener).execute();
     }
+
     @Override
     public void onSuccess() {
         listener.onDependencyDeleted();
@@ -35,5 +39,32 @@ public class ListDependencyInteractorImpl implements ListDependencyInteractor {
         listener.onDatabaseError(error);
     }
 
+
+    private static class ListDependencyInteractorAsyncTask extends AsyncTask<Void, Void, Void> {
+        private final OnLoadFinishedListener listener;
+        private ArrayList<Dependency> dependencies;
+
+        private ListDependencyInteractorAsyncTask(OnLoadFinishedListener listener) {
+            this.dependencies = new ArrayList<>();
+            this.listener = listener;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            dependencies = DependencyRepository.getInstance().getDependencies();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            listener.onDependenciesLoaded(dependencies);
+        }
+
+    }
 
 }
