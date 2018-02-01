@@ -1,5 +1,6 @@
 package com.example.usuario.inventorydatabase.ui.sector;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,33 +9,44 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.usuario.inventorydatabase.R;
 import com.example.usuario.inventorydatabase.adapter.SectorAdapter;
 import com.example.usuario.inventorydatabase.data.db.model.Sector;
 
+import java.util.ArrayList;
 
-//TODO: Implementar MVP
-public class ListSectorFragment extends Fragment {
 
+public class ListSectorFragment extends Fragment implements ListSectorContract.View {
     public static final String TAG = "ListSectorFragment";
     private RecyclerView recyclerSector;
-    private SectorAdapter sectorAdapter;
-    private SectorListener listener;
-    //private SectorAdapter.OnItemClickListener listener;
+    private SectorAdapter adapter;
+    private OnViewSectorListener callback;
+    private ListSectorContract.Presenter presenter;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            callback = (OnViewSectorListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity + "must implement OnViewSectorListener interface");
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        setPresenter(new ListSectorPresenter(this));
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_listsector, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_sector, container, false);
         recyclerSector = view.findViewById(android.R.id.list);
+        adapter = new SectorAdapter();
         return view;
     }
 
@@ -42,27 +54,29 @@ public class ListSectorFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         recyclerSector.setHasFixedSize(true);
         recyclerSector.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        listener = new SectorListener();
-
-        if (savedInstanceState != null)
-            sectorAdapter = new SectorAdapter(listener, savedInstanceState.getParcelableArrayList("sector"));
-        else
-            sectorAdapter = new SectorAdapter(listener);
-        recyclerSector.setAdapter(sectorAdapter);
+        recyclerSector.setAdapter(adapter);
+        presenter.loadSectors();
+        ((SectorActivity) getActivity()).fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callback.viewSector(null);
+            }
+        });
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("sector", sectorAdapter.getModifiedSectors());
+    public void setPresenter(ListSectorContract.Presenter presenter) {
+        this.presenter = presenter;
     }
 
-    class SectorListener implements SectorAdapter.OnItemClickListener {
-        @Override
-        public void onItemClick(Sector sector) {
-            Toast.makeText(getActivity(), "SectorItemClick: " + sector.getName(), Toast.LENGTH_SHORT).show();
-        }
+    @Override
+    public void showSectors(ArrayList<Sector> sectors) {
+        adapter.clear();
+        adapter.addAll(sectors);
+    }
+
+    public interface OnViewSectorListener {
+        void viewSector(Bundle bundle);
     }
 
 }

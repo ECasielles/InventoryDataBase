@@ -36,21 +36,12 @@ public class SectorRepository {
         return sectorDao.loadAll();
     }
 
-    private void addSector(Sector sector) {
+    public void addSector(Sector sector) {
         sectorDao.add(sector);
     }
 
-    private void updateSector(Sector sector) {
+    public void updateSector(Sector sector) {
         sectorDao.update(sector);
     }
-
-    private void deleteSector(Sector sector) {
-        sectorDao.delete(sector);
-    }
-
-    private boolean exists(Sector sector) {
-        return sectorDao.exists(sector);
-    }
-
 
 }

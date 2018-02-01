@@ -78,7 +78,7 @@ public class ListDependencyFragment extends ListFragment implements ListDependen
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_listdependency, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_list_dependency, container, false);
 
         //Como se encuentra en el Fragment usamos rootView
         fab = rootView.findViewById(R.id.fab);

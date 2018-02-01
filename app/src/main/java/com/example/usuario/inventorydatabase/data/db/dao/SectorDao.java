@@ -17,8 +17,6 @@ public class SectorDao {
     public ArrayList<Sector> loadAll() {
         ArrayList<Sector> sectors = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = InventoryOpenHelper.getInstance().openDatabase();
-        //rawQuery interpreta el comando usando '?' en la consulta.
-        //A medio camino entre SQL y SQLite
         Cursor cursor = sqLiteDatabase.query(
                 InventoryContract.SectorEntry.TABLE_NAME,
                 InventoryContract.SectorEntry.ALL_COLUMNS,
@@ -54,11 +52,4 @@ public class SectorDao {
 
     }
 
-    public void delete(Sector sector) {
-
-    }
-
-    public boolean exists(Sector sector) {
-        return false;
-    }
 }

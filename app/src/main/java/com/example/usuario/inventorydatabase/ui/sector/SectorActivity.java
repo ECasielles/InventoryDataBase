@@ -1,6 +1,7 @@
 package com.example.usuario.inventorydatabase.ui.sector;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -16,10 +17,13 @@ import com.example.usuario.inventorydatabase.R;
  * @see android.app.Activity
  * @see AppCompatActivity
  */
-public class SectorActivity extends AppCompatActivity {
+public class SectorActivity extends AppCompatActivity implements ListSectorFragment.OnViewSectorListener,
+        ViewSectorFragment.OnSectorsUpdatedListener {
 
     ListSectorFragment listSectorFragment;
+    ViewSectorFragment viewSectorFragment;
     Toolbar toolbar;
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,7 @@ public class SectorActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        fab = findViewById(R.id.fab);
 
         listSectorFragment = (ListSectorFragment) getSupportFragmentManager().findFragmentByTag(ListSectorFragment.TAG);
         if (listSectorFragment == null) {
@@ -44,6 +49,24 @@ public class SectorActivity extends AppCompatActivity {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu_activity_sector, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public void viewSector(Bundle bundle) {
+        viewSectorFragment = (ViewSectorFragment) getSupportFragmentManager().findFragmentByTag(ViewSectorFragment.TAG);
+        if (viewSectorFragment == null) {
+            viewSectorFragment = ViewSectorFragment.newInstance(bundle);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.activity_sector, viewSectorFragment, ViewSectorFragment.TAG)
+                    .commit();
+        }
+    }
+
+    @Override
+    public void onSectorsUpdated() {
+        if (viewSectorFragment != null)
+            getSupportFragmentManager().popBackStack();
     }
 
 }
