@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.usuario.inventorydatabase.R;
 import com.example.usuario.inventorydatabase.data.db.model.Product;
@@ -20,7 +20,7 @@ public class ProductViewFragment extends Fragment {
     public static final String TAG = "ProductViewFragment";
 
     EditText edtShortname, edtSerial, edtVendor, edtModelcode, edtDescription, edtPrice, edtDatePurchase, edtUrl, edtNotes;
-    Spinner spnCategory, spnSubcategory, spnProductClass;
+    TextView txvCategory, spnSubcategory, txvProductClass;
     int dependencyId;
     int sectorID;
     int quantity;
@@ -46,9 +46,9 @@ public class ProductViewFragment extends Fragment {
         edtDatePurchase = view.findViewById(R.id.edtDatePurchase);
         edtUrl = view.findViewById(R.id.edtUrl);
         edtNotes = view.findViewById(R.id.edtNotes);
-        spnCategory = view.findViewById(R.id.spnCategory);
+        txvCategory = view.findViewById(R.id.txvCategory);
         //spnSubcategory = view.findViewById(R.id.spnSubCategory);
-        spnProductClass = view.findViewById(R.id.spnProductClass);
+        txvProductClass = view.findViewById(R.id.txvProductClass);
         return view;
     }
 
@@ -65,9 +65,9 @@ public class ProductViewFragment extends Fragment {
             edtDatePurchase.setText(product.getDatePurchase());
             edtUrl.setText(product.getUrl());
             edtNotes.setText(product.getNotes());
-            spnCategory.setSelection(product.getCategory());
+            txvCategory.setSelection(product.getCategory());
             //spnSubcategory.setSelection(product().getSubcategory());
-            spnProductClass.setSelection(product.getProductClass());
+            txvProductClass.setSelection(product.getProductClass());
         }
     }
 
