@@ -47,7 +47,7 @@ public class AddEditDependencyFragment extends BaseFragment implements AddEditDe
         try {
             callback = (AddEditDependencyListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(getActivity().getLocalClassName() + " must implements ListDepedencyListener");
+            throw new ClassCastException(getActivity().getLocalClassName() + " must implement ListDependencyListener");
         }
     }
 

@@ -7,37 +7,10 @@ import android.os.Parcelable;
  * Clase POJO que representa la entidad sector
  *
  * @author Enrique Casielles
- * @version 1.0
+ * @version 2.0
  * @see Parcelable
  */
 public class Sector implements Parcelable {
-    int _ID;
-    String name, shortname, description;
-    int dependencyId;
-    boolean enabled = true;     //Habilitados por defecto
-    boolean sectorDefault = true;    //Se visualiza un TextView en el sector por defecto
-    public static String TAG = "Sector";
-
-    public Sector(int ID, String name, String shortname, String description, int dependencyId, boolean enabled, boolean sectorDefault) {
-        this._ID = ID;
-        this.name = name;
-        this.shortname = shortname;
-        this.description = description;
-        this.dependencyId = dependencyId;
-        this.enabled = enabled;
-        this.sectorDefault = sectorDefault;
-    }
-
-    protected Sector(Parcel in) {
-        _ID = in.readInt();
-        name = in.readString();
-        shortname = in.readString();
-        description = in.readString();
-        dependencyId = in.readInt();
-        enabled = in.readByte() != 0;
-        sectorDefault = in.readByte() != 0;
-    }
-
     public static final Creator<Sector> CREATOR = new Creator<Sector>() {
         @Override
         public Sector createFromParcel(Parcel in) {
@@ -49,6 +22,35 @@ public class Sector implements Parcelable {
             return new Sector[size];
         }
     };
+    public static String TAG = "Sector";
+    int _ID;
+    int dependencyId;
+    String name, shortname, description;
+    String imageName;
+    boolean enabled = true;     //Habilitados por defecto
+    boolean sectorDefault = true;    //Se visualiza un TextView en el sector por defecto
+
+    public Sector(int ID, int dependencyId, String name, String shortname, String description, String imageName, boolean enabled, boolean sectorDefault) {
+        this._ID = ID;
+        this.dependencyId = dependencyId;
+        this.name = name;
+        this.shortname = shortname;
+        this.description = description;
+        this.imageName = imageName;
+        this.enabled = enabled;
+        this.sectorDefault = sectorDefault;
+    }
+
+    protected Sector(Parcel in) {
+        _ID = in.readInt();
+        dependencyId = in.readInt();
+        name = in.readString();
+        shortname = in.readString();
+        description = in.readString();
+        imageName = in.readString();
+        enabled = in.readByte() != 0;
+        sectorDefault = in.readByte() != 0;
+    }
 
     public int getID() {
         return _ID;
@@ -80,6 +82,14 @@ public class Sector implements Parcelable {
     public void setDescription(String _description) {
         this.description = _description;
     }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
     public boolean isEnabled() {
         return enabled;
     }
@@ -107,10 +117,11 @@ public class Sector implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(_ID);
+        dest.writeInt(dependencyId);
         dest.writeString(name);
         dest.writeString(shortname);
         dest.writeString(description);
-        dest.writeInt(dependencyId);
+        dest.writeString(imageName);
         dest.writeByte((byte) (enabled ? 1 : 0));
         dest.writeByte((byte) (sectorDefault ? 1 : 0));
     }

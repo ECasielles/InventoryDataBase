@@ -38,7 +38,7 @@ public class DependencyAdapter extends ArrayAdapter<Dependency>{
         //super(context, R.layout.item_dependency, DependencyRepository.getInstance().loadDependencies());
         //sort(new Dependency.DependencyOrderByShortName());
         //Con esto los datos no se han inicializado, pero instanciamos el ArrayList interno
-        super(context, R.layout.item_dependency, new ArrayList<Dependency>());
+        super(context, R.layout.item_dependency, new ArrayList<>());
     }
 
     /**

@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
  */
 public final class InventoryContract {
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "Inventory.db";
     //Constructor privado para que no sea instanciada
     private InventoryContract() { }
@@ -98,11 +98,10 @@ public final class InventoryContract {
     public static class SectorEntry implements BaseColumns {
 
         public static final String TABLE_NAME = "sector";
-        public static final String COLUMN_DEPENDENCY_ID = "sectorId";
+        public static final String COLUMN_DEPENDENCY_ID = "dependencyId";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_SHORTNAME = "shortname";
         public static final String COLUMN_DESCRIPTION = "description";
-        public static final String COLUMN_IMAGEBASE64 = "imageBase64";
         public static final String COLUMN_IMAGENAME = "imageName";
 
         public static final String REFERENCES_DEPENDENCY_ID = String.format(
@@ -112,8 +111,12 @@ public final class InventoryContract {
 
         //En el mismo orden que las declaramos
         public static final String[] ALL_COLUMNS = new String[] {
-                BaseColumns._ID, COLUMN_DEPENDENCY_ID, COLUMN_NAME, COLUMN_SHORTNAME,
-                COLUMN_DESCRIPTION, COLUMN_IMAGEBASE64, COLUMN_IMAGENAME
+                BaseColumns._ID,
+                COLUMN_DEPENDENCY_ID,
+                COLUMN_NAME,
+                COLUMN_SHORTNAME,
+                COLUMN_DESCRIPTION,
+                COLUMN_IMAGENAME
         };
 
         public static final String DEFAULT_SORT = COLUMN_NAME;
@@ -126,7 +129,6 @@ public final class InventoryContract {
                         "%s TEXT NOT NULL, " +
                         "%s TEXT NOT NULL, " +
                         "%s TEXT NOT NULL, " +
-                        "%s TEXT NOT NULL, " +
                         "%s)",
                 TABLE_NAME,
                 BaseColumns._ID,
@@ -134,7 +136,6 @@ public final class InventoryContract {
                 COLUMN_NAME,
                 COLUMN_SHORTNAME,
                 COLUMN_DESCRIPTION,
-                COLUMN_IMAGEBASE64,
                 COLUMN_IMAGENAME,
                 REFERENCES_DEPENDENCY_ID
         );
@@ -142,25 +143,23 @@ public final class InventoryContract {
                 "DROP TABLE IF EXISTS %s", TABLE_NAME);
 
         public static final String SQL_INSERT_ENTRIES = String.format(
-                "INSERT INTO %s (%s, %s, %s, %s, %s, %s) VALUES ('%s', '%s', '%s', '%s', '%s', '%s'),", TABLE_NAME,
+                "INSERT INTO %s (%s, %s, %s, %s, %s) VALUES ", TABLE_NAME,
                 COLUMN_DEPENDENCY_ID,
                 COLUMN_NAME,
                 COLUMN_SHORTNAME,
                 COLUMN_DESCRIPTION,
-                COLUMN_IMAGEBASE64,
-                COLUMN_IMAGENAME,
+                COLUMN_IMAGENAME
+        ) + String.format("('%s', '%s', '%s', '%s', '%s'),",
                 1,
                 "Armario Izquierda del aula de DAM1",
                 "ArmIzqDAM1",
                 "Armario del aula de DAM1 que se encuentra a la izquierda de la puerta",
-                "sin imagen",
                 "sin imagen"
-        ) + String.format("('%s', '%s', '%s', '%s', '%s', '%s')",
+        ) + String.format("('%s', '%s', '%s', '%s', '%s')",
                 2,
                 "Armario Izquierda del aula de DAM2",
                 "ArmIzqDAM2",
                 "Armario del aula de DAM2 que se encuentra a la izquierda de la puerta",
-                "sin imagen",
                 "sin imagen"
         );
     }
@@ -168,14 +167,14 @@ public final class InventoryContract {
     public static class ProductEntry implements BaseColumns {
 
         public static final String TABLE_NAME = "product";
-        public static final String COLUMN_DEPENDENCY_ID = "productId";
+        public static final String COLUMN_DEPENDENCY_ID = "dependencyId";
         public static final String COLUMN_SERIAL = "serial";
         public static final String COLUMN_MODEL_CODE = "modelCode";
         public static final String COLUMN_SHORTNAME = "shortname";
         public static final String COLUMN_DESCRIPTION = "description";
         public static final String COLUMN_CATEGORY = "category";
         public static final String COLUMN_PRODUCT_CLASS = "productClass";
-        public static final String COLUMN_SECTOR_ID = "sectorID";
+        public static final String COLUMN_SECTOR_ID = "sectorId";
         public static final String COLUMN_QUANTITY = "quantity";
         public static final String COLUMN_VALUE = "value";
         public static final String COLUMN_VENDOR = "vendor";
@@ -196,6 +195,11 @@ public final class InventoryContract {
         public static final String REFERENCES_SECTOR_ID = String.format(
                 "FOREIGN KEY (%s) REFERENCES %s(%s) ON UPDATE CASCADE ON DELETE RESTRICT",
                 COLUMN_SECTOR_ID, SectorEntry.TABLE_NAME, BaseColumns._ID
+        );
+
+        public static final String WHERE_ID = String.format(
+                "%s = ?",
+                BaseColumns._ID
         );
 
         //En el mismo orden que las declaramos
@@ -239,9 +243,9 @@ public final class InventoryContract {
                         "%s TEXT NOT NULL, " +
                         "%s TEXT NOT NULL, " +
                         "%s TEXT NOT NULL, " +
-                        "%s," +
-                        "%s," +
-                        "%s," +
+                        "%s, " +
+                        "%s, " +
+                        "%s" +
                         ")",
                 TABLE_NAME, BaseColumns._ID,
                 COLUMN_DEPENDENCY_ID,
@@ -269,7 +273,7 @@ public final class InventoryContract {
                 "DROP TABLE IF EXISTS %s", TABLE_NAME);
 
         public static final String SQL_INSERT_ENTRIES = String.format(
-                "INSERT INTO %s (%s, %s, %s, %s, %s, %s) VALUES ('%s', '%s', '%s', '%s', '%s', '%s'),", TABLE_NAME,
+                "INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES ", TABLE_NAME,
                 COLUMN_DEPENDENCY_ID,
                 COLUMN_SERIAL,
                 COLUMN_MODEL_CODE,
@@ -285,29 +289,201 @@ public final class InventoryContract {
                 COLUMN_IMAGENAME,
                 COLUMN_URL,
                 COLUMN_DATE_PURCHASE,
-                COLUMN_NOTES,
+                COLUMN_NOTES
+        ) + String.format("(%s, '%s', '%s', '%s', '%s', %s, %s, %s, %s, %s, '%s', %s, '%s', '%s', '%s', '%s'),",
                 1,
-                "Armario Izquierda del aula de DAM1",
-                "ArmIzqDAM1",
-                "Armario del aula de DAM1 que se encuentra a la izquierda de la puerta",
-                "sin imagen",
-                "sin imagen"
-        ) + String.format("('%s', '%s', '%s', '%s', '%s', '%s')",
+                "PC_01",
+                "ASUS MM 2020",
+                "ASUS Muy Malo 2020",
+                "No tiene ni tarjeta de red",
+                1,
+                1,
+                1,
+                12,
+                666.66f,
+                "ASUSTEK",
+                -1,
+                "Logo HP",
+                "www.hotmail.com",
+                "1995-12-12",
+                "¿Este? para Enrique >:D"
+        ) + String.format("(%s, '%s', '%s', '%s', '%s', %s, %s, %s, %s, %s, '%s', %s, '%s', '%s', '%s', '%s'),",
+                1,
+                "PC_02",
+                "ASUS MM 2020",
+                "ASUS Muy Malo 2020",
+                "No tiene ni tarjeta de red",
+                1,
+                1,
+                1,
+                1,
+                666.66f,
+                "ASUSTEK",
+                -1,
+                "Logo HP",
+                "www.gmail.com",
+                "1995-12-12",
+                "¿Este? para Jaime >:D"
+        ) + String.format("(%s, '%s', '%s', '%s', '%s', %s, %s, %s, %s, %s, '%s', %s, '%s', '%s', '%s', '%s'),",
                 2,
-                "Armario Izquierda del aula de DAM2",
-                "ArmIzqDAM2",
-                "Armario del aula de DAM2 que se encuentra a la izquierda de la puerta",
-                "sin imagen",
-                "sin imagen"
+                "PC_03",
+                "ASUS MM 2020",
+                "ASUS Muy Malo 2020",
+                "Le falla la pantalla",
+                1,
+                1,
+                1,
+                1,
+                666.66f,
+                "ASUSTEK",
+                -1,
+                "Logo HP",
+                "www.gmail.com",
+                "1995-12-12",
+                "¿Este? para Pablo >:D"
+        ) + String.format("(%s, '%s', '%s', '%s', '%s', %s, %s, %s, %s, %s, '%s', %s, '%s', '%s', '%s', '%s'),",
+                1,
+                "Monitor ACER",
+                "ACER 256PX",
+                "ASUS con 256 píxeles",
+                "Sólo se ven dos colores",
+                2,
+                2,
+                2,
+                12,
+                166.66f,
+                "ASUSTEK2",
+                -1,
+                "Logo HP",
+                "www.gmail.com",
+                "1995-12-12",
+                "¿Este? para Nico >:D"
+        ) + String.format("(%s, '%s', '%s', '%s', '%s', %s, %s, %s, %s, %s, '%s', %s, '%s', '%s', '%s', '%s'),",
+                1,
+                "CPU_01",
+                "Tontel 16Hz",
+                "CPU Tontel de 16Hz",
+                "Con overclock se queda en 17Hz",
+                2,
+                2,
+                3,
+                12,
+                1066.66f,
+                "ASUSTEK3",
+                -1,
+                "Logo Tontel",
+                "www.tontel.co.nz",
+                "2995-12-12",
+                "¿Este? para Salva >:D"
+        ) + String.format("(%s, '%s', '%s', '%s', '%s', %s, %s, %s, %s, %s, '%s', %s, '%s', '%s', '%s', '%s')",
+                1,
+                "Ventilador_01",
+                "RSP-6000",
+                "Resoplaplús 6000",
+                "Especial para los resopladores de 2º",
+                2,
+                2,
+                4,
+                15,
+                20.00f,
+                "ASUSTEK4",
+                -1,
+                "Logo Indra",
+                "www.gmail.com",
+                "3995-12-12",
+                "¿Este? para todo segundo >:D"
         );
+
     }
 
     public static class ProductClassEntry implements BaseColumns {
         public static final String TABLE_NAME = "productClass";
+        public static final String COLUMN_DESCRIPTION = "description";
+
+
+        //En el mismo orden que las declaramos
+        public static final String[] ALL_COLUMNS = new String[]{
+                BaseColumns._ID,
+                COLUMN_DESCRIPTION
+        };
+
+        public static final String DEFAULT_SORT = COLUMN_DESCRIPTION;
+
+        public static final String SQL_CREATE_ENTRIES = String.format(
+                "CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "%s TEXT NOT NULL)",
+                TABLE_NAME, BaseColumns._ID,
+                COLUMN_DESCRIPTION
+        );
+
+        public static final String SQL_DELETE_ENTRIES = String.format(
+                "DROP TABLE IF EXISTS %s", TABLE_NAME);
+
+        public static final String SQL_INSERT_ENTRIES = String.format(
+                "INSERT INTO %s (%s) VALUES ", TABLE_NAME,
+                COLUMN_DESCRIPTION
+        ) + String.format("('%s'),",
+                "PCses"
+        ) + String.format("('%s'),",
+                "Monitores"
+        ) + String.format("('%s'),",
+                "CPUses"
+        ) + String.format("('%s')",
+                "Ventiladoreses"
+        );
+
     }
 
     public static class CategoryEntry implements BaseColumns {
         public static final String TABLE_NAME = "category";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_SHORTNAME = "shortname";
+        public static final String COLUMN_DESCRIPTION = "description";
+
+        //En el mismo orden que las declaramos
+        public static final String[] ALL_COLUMNS = new String[]{
+                BaseColumns._ID,
+                COLUMN_NAME,
+                COLUMN_SHORTNAME,
+                COLUMN_DESCRIPTION
+        };
+
+        public static final String DEFAULT_SORT = COLUMN_NAME;
+
+        public static final String SQL_CREATE_ENTRIES = String.format(
+                "CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "%s TEXT NOT NULL," +
+                        "%s TEXT NOT NULL," +
+                        "%s TEXT NOT NULL" +
+                        ")",
+                TABLE_NAME, BaseColumns._ID,
+                COLUMN_NAME,
+                COLUMN_SHORTNAME,
+                COLUMN_DESCRIPTION
+        );
+
+        public static final String SQL_DELETE_ENTRIES = String.format(
+                "DROP TABLE IF EXISTS %s", TABLE_NAME);
+
+        public static final String SQL_INSERT_ENTRIES = String.format(
+                "INSERT INTO %s (%s, %s, %s) VALUES ", TABLE_NAME,
+                COLUMN_NAME,
+                COLUMN_SHORTNAME,
+                COLUMN_DESCRIPTION
+        ) + String.format("('%s','%s','%s'),",
+                "Hardware para el alumnado",
+                "Hardware",
+                "Todo tipo de material electrónico excepto ventiladores"
+        ) + String.format("('%s','%s','%s'),",
+                "Software para el dios de la sangre",
+                "Software",
+                "Programas para torturar alumnos"
+        ) + String.format("('%s','%s','%s')",
+                "Huesos para el trono de huesos",
+                "Ventiladores",
+                "Para que los alumnos soplen"
+        );
+
     }
 
 }

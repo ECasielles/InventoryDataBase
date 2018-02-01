@@ -49,6 +49,12 @@ public class InventoryOpenHelper extends SQLiteOpenHelper {
             db.execSQL(InventoryContract.DependencyEntry.SQL_INSERT_ENTRIES);
             db.execSQL(InventoryContract.SectorEntry.SQL_CREATE_ENTRIES);
             db.execSQL(InventoryContract.SectorEntry.SQL_INSERT_ENTRIES);
+            db.execSQL(InventoryContract.ProductClassEntry.SQL_CREATE_ENTRIES);
+            db.execSQL(InventoryContract.ProductClassEntry.SQL_INSERT_ENTRIES);
+            db.execSQL(InventoryContract.CategoryEntry.SQL_CREATE_ENTRIES);
+            db.execSQL(InventoryContract.CategoryEntry.SQL_INSERT_ENTRIES);
+            db.execSQL(InventoryContract.ProductEntry.SQL_CREATE_ENTRIES);
+            db.execSQL(InventoryContract.ProductEntry.SQL_INSERT_ENTRIES);
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             Log.e("InventoryOpenHelper: ", e.getMessage());
@@ -64,8 +70,11 @@ public class InventoryOpenHelper extends SQLiteOpenHelper {
             //IMPORTANTE: A la hora de eliminar hay que tener en cuenta el orden por
             //claves ajenas.
             //Esta es la forma rápida.
-            db.execSQL(InventoryContract.DependencyEntry.SQL_DELETE_ENTRIES);
+            db.execSQL(InventoryContract.ProductEntry.SQL_DELETE_ENTRIES);
+            db.execSQL(InventoryContract.ProductClassEntry.SQL_DELETE_ENTRIES);
+            db.execSQL(InventoryContract.CategoryEntry.SQL_DELETE_ENTRIES);
             db.execSQL(InventoryContract.SectorEntry.SQL_DELETE_ENTRIES);
+            db.execSQL(InventoryContract.DependencyEntry.SQL_DELETE_ENTRIES);
             onCreate(db);
             db.setTransactionSuccessful();
         } catch (SQLException e) {
@@ -83,8 +92,11 @@ public class InventoryOpenHelper extends SQLiteOpenHelper {
             //IMPORTANTE: A la hora de eliminar hay que tener en cuenta el orden por
             //claves ajenas.
             //Esta es la forma rápida.
-            db.execSQL(InventoryContract.DependencyEntry.SQL_DELETE_ENTRIES);
+            db.execSQL(InventoryContract.ProductEntry.SQL_DELETE_ENTRIES);
+            db.execSQL(InventoryContract.ProductClassEntry.SQL_DELETE_ENTRIES);
+            db.execSQL(InventoryContract.CategoryEntry.SQL_DELETE_ENTRIES);
             db.execSQL(InventoryContract.SectorEntry.SQL_DELETE_ENTRIES);
+            db.execSQL(InventoryContract.DependencyEntry.SQL_DELETE_ENTRIES);
             onCreate(db);
             db.setTransactionSuccessful();
         } catch (SQLException e) {

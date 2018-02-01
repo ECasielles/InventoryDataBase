@@ -27,14 +27,16 @@ public class SectorDao {
         );
         if (cursor.moveToFirst()) {
             do {
-                sectors.add(new Sector(
+                sectors.add(
+                        new Sector(
                                 cursor.getInt(0),
-                                cursor.getString(1),
+                                cursor.getInt(1),
                                 cursor.getString(2),
                                 cursor.getString(3),
-                                cursor.getInt(4),
-                                cursor.getInt(5) == 1,
-                                cursor.getInt(6) == 1
+                                cursor.getString(4),
+                                cursor.getString(5),
+                                false,
+                                false
                         )
                 );
             } while (cursor.moveToNext());

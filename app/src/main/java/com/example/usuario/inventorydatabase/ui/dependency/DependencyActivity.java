@@ -2,7 +2,6 @@ package com.example.usuario.inventorydatabase.ui.dependency;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
@@ -28,11 +27,8 @@ public class DependencyActivity extends BaseActivity implements ListDependencyFr
     //La actividad inicializa cada fragment con su presentador
     private ListDependencyFragment listDependencyFragment;
     private ListDependencyPresenter listPresenter;
-
     private AddEditDependencyFragment addeditDependencyFragment;
     private AddEditDependencyPresenter addEditPresenter;
-
-    private Fragment detailDependency;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +48,6 @@ public class DependencyActivity extends BaseActivity implements ListDependencyFr
 
         //3.- Si fuera necesario, se asigan el presentador a su fragment
         listDependencyFragment.setPresenter(listPresenter);
-
     }
 
     /**
