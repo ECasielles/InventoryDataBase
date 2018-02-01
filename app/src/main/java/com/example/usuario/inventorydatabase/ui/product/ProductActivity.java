@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.usuario.inventorydatabase.R;
+import com.example.usuario.inventorydatabase.ui.product.fragment.ProductListFragment;
+import com.example.usuario.inventorydatabase.ui.product.fragment.ProductViewFragment;
 
 /**
  * Actividad que maneja el alta de productos

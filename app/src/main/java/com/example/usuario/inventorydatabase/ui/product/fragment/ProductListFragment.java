@@ -1,4 +1,4 @@
-package com.example.usuario.inventorydatabase.ui.product;
+package com.example.usuario.inventorydatabase.ui.product.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -13,16 +13,20 @@ import android.widget.AdapterView;
 import com.example.usuario.inventorydatabase.R;
 import com.example.usuario.inventorydatabase.adapter.ProductAdapter;
 import com.example.usuario.inventorydatabase.data.db.model.Product;
-import com.example.usuario.inventorydatabase.data.db.repository.ProductRepository;
+import com.example.usuario.inventorydatabase.ui.product.contract.ProductListContract;
+import com.example.usuario.inventorydatabase.ui.product.presenter.ProductListPresenter;
+
+import java.util.ArrayList;
 
 /**
  * Created by icenri on 2/1/18.
  */
 
-public class ProductListFragment extends ListFragment {
+public class ProductListFragment extends ListFragment implements ProductListContract.View {
     public static final String TAG = "ProductListFragment";
     private ProductAdapter adapter;
     private ProductListFragment.OnProductSelectedListener callback;
+    private ProductListContract.Presenter presenter;
 
 
     @Override
@@ -40,6 +44,7 @@ public class ProductListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         this.adapter = new ProductAdapter(getActivity());
         setRetainInstance(true);
+        setPresenter(new ProductListPresenter(this));
     }
 
     @Override
@@ -51,10 +56,8 @@ public class ProductListFragment extends ListFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         setListAdapter(adapter);
-        adapter.clear();
-        adapter.addAll(ProductRepository.getInstance().getProducts());
+        presenter.loadProducts();
 
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -66,6 +69,17 @@ public class ProductListFragment extends ListFragment {
             }
         });
 
+    }
+
+    @Override
+    public void setPresenter(ProductListContract.Presenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void showProducts(ArrayList<Product> products) {
+        adapter.clear();
+        adapter.addAll(products);
     }
 
     public interface OnProductSelectedListener {

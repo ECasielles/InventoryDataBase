@@ -1,25 +1,10 @@
 package com.example.usuario.inventorydatabase.data.db.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 /**
- * Created by icenri on 1/31/18.
+ * Created by usuario on 1/02/18.
  */
 
-public class Product implements Parcelable {
-    public static final String TAG = "Product";
-    public static final Creator<Product> CREATOR = new Creator<Product>() {
-        @Override
-        public Product createFromParcel(Parcel in) {
-            return new Product(in);
-        }
-
-        @Override
-        public Product[] newArray(int size) {
-            return new Product[size];
-        }
-    };
+public class ProductView {
 
     private int id;
     private int dependencyId;
@@ -27,9 +12,9 @@ public class Product implements Parcelable {
     private String modelCode;
     private String shortname;
     private String description;
-    private int category;
-    private int productClass;
-    private int sectorID;
+    private String categoryName;
+    private String productClassDescription;
+    private String sectorName;
     private int quantity;
     private float value;
     private String vendor;
@@ -39,16 +24,16 @@ public class Product implements Parcelable {
     private String datePurchase;
     private String notes;
 
-    public Product(int id, int dependencyId, String serial, String modelCode, String shortname, String description, int category, int productClass, int sectorID, int quantity, float value, String vendor, int bitmap, String imageName, String url, String datePurchase, String notes) {
+    public ProductView(int id, int dependencyId, String serial, String modelCode, String shortname, String description, String categoryName, String productClassDescription, String sectorName, int quantity, float value, String vendor, int bitmap, String imageName, String url, String datePurchase, String notes) {
         this.id = id;
         this.dependencyId = dependencyId;
         this.serial = serial;
         this.modelCode = modelCode;
         this.shortname = shortname;
         this.description = description;
-        this.category = category;
-        this.productClass = productClass;
-        this.sectorID = sectorID;
+        this.categoryName = categoryName;
+        this.productClassDescription = productClassDescription;
+        this.sectorName = sectorName;
         this.quantity = quantity;
         this.value = value;
         this.vendor = vendor;
@@ -59,27 +44,7 @@ public class Product implements Parcelable {
         this.notes = notes;
     }
 
-    protected Product(Parcel in) {
-        id = in.readInt();
-        dependencyId = in.readInt();
-        serial = in.readString();
-        modelCode = in.readString();
-        shortname = in.readString();
-        description = in.readString();
-        category = in.readInt();
-        productClass = in.readInt();
-        sectorID = in.readInt();
-        quantity = in.readInt();
-        value = in.readFloat();
-        vendor = in.readString();
-        bitmap = in.readInt();
-        imageName = in.readString();
-        url = in.readString();
-        datePurchase = in.readString();
-        notes = in.readString();
-    }
-
-    public int get_ID() {
+    public int getId() {
         return id;
     }
 
@@ -127,28 +92,28 @@ public class Product implements Parcelable {
         this.description = description;
     }
 
-    public int getCategory() {
-        return category;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCategory(int category) {
-        this.category = category;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
-    public int getProductClass() {
-        return productClass;
+    public String getProductClassDescription() {
+        return productClassDescription;
     }
 
-    public void setProductClass(int productClass) {
-        this.productClass = productClass;
+    public void setProductClassDescription(String productClassDescription) {
+        this.productClassDescription = productClassDescription;
     }
 
-    public int getSectorID() {
-        return sectorID;
+    public String getSectorName() {
+        return sectorName;
     }
 
-    public void setSectorID(int sectorID) {
-        this.sectorID = sectorID;
+    public void setSectorName(String sectorName) {
+        this.sectorName = sectorName;
     }
 
     public int getQuantity() {
@@ -215,30 +180,4 @@ public class Product implements Parcelable {
         this.notes = notes;
     }
 
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
-        parcel.writeInt(dependencyId);
-        parcel.writeString(serial);
-        parcel.writeString(modelCode);
-        parcel.writeString(shortname);
-        parcel.writeString(description);
-        parcel.writeInt(category);
-        parcel.writeInt(productClass);
-        parcel.writeInt(sectorID);
-        parcel.writeInt(quantity);
-        parcel.writeFloat(value);
-        parcel.writeString(vendor);
-        parcel.writeInt(bitmap);
-        parcel.writeString(imageName);
-        parcel.writeString(url);
-        parcel.writeString(datePurchase);
-        parcel.writeString(notes);
-    }
 }

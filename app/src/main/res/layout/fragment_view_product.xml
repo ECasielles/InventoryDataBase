@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:orientation="vertical"
-    android:scrollbars="vertical"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:orientation="vertical"
+            android:scrollbars="vertical"
     >
 
     <android.support.constraint.ConstraintLayout
@@ -136,7 +137,7 @@
             />
 
         <TextView
-            android:id="@+id/txvCategory"
+            android:id="@+id/txvCategoryLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -146,56 +147,59 @@
             app:layout_constraintTop_toBottomOf="@+id/txvModelCode"
             />
 
-        <Spinner
-            android:id="@+id/spnCategory"
+        <TextView
+            android:id="@+id/txvCategory"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="@+id/ivwQRCode"
             app:layout_constraintStart_toStartOf="@+id/edtModelCode"
             app:layout_constraintTop_toBottomOf="@+id/edtModelCode"
+            tools:text="Category"
             />
 
         <TextView
-            android:id="@+id/txvSubCategory"
+            android:id="@+id/txvSubCategoryLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
             android:text="@string/txvSubCategory"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txvCategory"
+            app:layout_constraintTop_toBottomOf="@+id/txvCategoryLabel"
             />
 
-        <Spinner
+        <TextView
             android:id="@+id/spnSubCategory"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toEndOf="@+id/spnCategory"
-            app:layout_constraintStart_toStartOf="@+id/spnCategory"
-            app:layout_constraintTop_toBottomOf="@+id/spnCategory"
+            app:layout_constraintEnd_toEndOf="@+id/txvCategory"
+            app:layout_constraintStart_toStartOf="@+id/txvCategory"
+            app:layout_constraintTop_toBottomOf="@+id/txvCategory"
+            tools:text="Subcategory"
             />
 
         <TextView
-            android:id="@+id/txvProductClass"
+            android:id="@+id/txvProductClassLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
             android:text="@string/txvType"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txvSubCategory"
+            app:layout_constraintTop_toBottomOf="@+id/txvSubCategoryLabel"
             />
 
-        <Spinner
-            android:id="@+id/spnProductClass"
+        <TextView
+            android:id="@+id/txvProductClass"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="@+id/spnSubCategory"
             app:layout_constraintStart_toStartOf="@+id/spnSubCategory"
             app:layout_constraintTop_toBottomOf="@+id/spnSubCategory"
+            tools:text="Product Class"
             />
 
         <TextView
@@ -206,7 +210,7 @@
             android:layout_marginTop="32dp"
             android:text="@string/txvDescription"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txvProductClass"
+            app:layout_constraintTop_toBottomOf="@+id/txvProductClassLabel"
             />
 
         <EditText
@@ -217,9 +221,9 @@
             android:ems="10"
             android:inputType="textMultiLine"
             android:text=""
-            app:layout_constraintEnd_toEndOf="@+id/spnProductClass"
-            app:layout_constraintStart_toStartOf="@+id/spnProductClass"
-            app:layout_constraintTop_toBottomOf="@+id/spnProductClass"
+            app:layout_constraintEnd_toEndOf="@+id/txvProductClass"
+            app:layout_constraintStart_toStartOf="@+id/txvProductClass"
+            app:layout_constraintTop_toBottomOf="@+id/txvProductClass"
             />
 
         <TextView

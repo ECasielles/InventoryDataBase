@@ -1,4 +1,4 @@
-package com.example.usuario.inventorydatabase.ui.product;
+package com.example.usuario.inventorydatabase.ui.product.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,13 +10,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.usuario.inventorydatabase.R;
+import com.example.usuario.inventorydatabase.data.db.model.Category;
 import com.example.usuario.inventorydatabase.data.db.model.Product;
+import com.example.usuario.inventorydatabase.data.db.model.ProductClass;
+import com.example.usuario.inventorydatabase.ui.product.contract.ProductViewContract;
+import com.example.usuario.inventorydatabase.ui.product.presenter.ProductViewPresenter;
 
 /**
  * Created by icenri on 1/31/18.
  */
 
-public class ProductViewFragment extends Fragment {
+public class ProductViewFragment extends Fragment implements ProductViewContract.View {
     public static final String TAG = "ProductViewFragment";
 
     EditText edtShortname, edtSerial, edtVendor, edtModelcode, edtDescription, edtPrice, edtDatePurchase, edtUrl, edtNotes;
@@ -26,11 +30,13 @@ public class ProductViewFragment extends Fragment {
     int quantity;
     int bitmap;
     String imageName;
+    private ProductViewContract.Presenter presenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        setPresenter(new ProductViewPresenter(this));
     }
 
     @Nullable
@@ -54,6 +60,7 @@ public class ProductViewFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
         if (getArguments() != null) {
             Product product = getArguments().getParcelable(Product.TAG);
             edtShortname.setText(product.getShortname());
@@ -65,10 +72,28 @@ public class ProductViewFragment extends Fragment {
             edtDatePurchase.setText(product.getDatePurchase());
             edtUrl.setText(product.getUrl());
             edtNotes.setText(product.getNotes());
-            txvCategory.setSelection(product.getCategory());
+
             //spnSubcategory.setSelection(product().getSubcategory());
-            txvProductClass.setSelection(product.getProductClass());
+            presenter.loadCategories(product.getCategory());
+            presenter.loadProductClasses(product.getProductClass());
         }
+
     }
+
+    @Override
+    public void setPresenter(ProductViewContract.Presenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void saveCategories(Category category) {
+        txvCategory.setText(category.getShortname());
+    }
+
+    @Override
+    public void saveProductClasses(ProductClass productClass) {
+        txvProductClass.setText(productClass.getDescription());
+    }
+
 
 }

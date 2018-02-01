@@ -2,12 +2,12 @@ package com.example.usuario.inventorydatabase.data.db.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.usuario.inventorydatabase.data.db.InventoryContract;
 import com.example.usuario.inventorydatabase.data.db.InventoryOpenHelper;
 import com.example.usuario.inventorydatabase.data.db.model.Product;
+import com.example.usuario.inventorydatabase.data.db.model.ProductView;
 
 import java.util.ArrayList;
 
@@ -66,12 +66,55 @@ public class ProductDao {
         return products;
     }
 
+    public ProductView loadProductView() {
+        ProductView productView = null;
+        SQLiteDatabase db = InventoryOpenHelper.getInstance().openDatabase();
+
+        //rawQuery interpreta el comando usando '?' en la consulta.
+        //A medio camino entre SQL y SQLite
+        Cursor cursor = db.query(
+                InventoryContract.ProductViewEntry.TABLE_NAME,
+                InventoryContract.ProductEntry.ALL_COLUMNS,
+                null, null, null, null,
+                InventoryContract.ProductEntry.DEFAULT_SORT, null
+        );
+        if (cursor.moveToFirst()) {
+            do {
+                productView = new ProductView(
+                        cursor.getInt(0),
+                        cursor.getInt(1),
+                        cursor.getString(2),
+                        cursor.getString(4),
+                        cursor.getString(5),
+                        cursor.getString(3),
+                        cursor.getString(6),
+                        cursor.getString(7),
+                        cursor.getString(8),
+                        cursor.getInt(9),
+                        cursor.getFloat(10),
+                        cursor.getString(11),
+                        cursor.getInt(12),
+                        cursor.getString(13),
+                        cursor.getString(14),
+                        cursor.getString(15),
+                        cursor.getString(16)
+                );
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        InventoryOpenHelper.getInstance().closeDatabase();
+        return productView;
+    }
+
+
+
     /**
      * Método que añade una dependencia en la base de datos
      *
      * @param product Producto que se añade
      * @return Devuelve el id del nuevo elemento que se ha insertado
      */
+/*
     public long add(Product product) {
         SQLiteDatabase sqLiteDatabase = InventoryOpenHelper.getInstance().openDatabase();
         //nullColumnHack crea filas sólo con id para evitar errores
@@ -84,6 +127,8 @@ public class ProductDao {
         InventoryOpenHelper.getInstance().closeDatabase();
         return id;
     }
+
+
 
     public int delete(Product product) {
         int result;
@@ -113,7 +158,7 @@ public class ProductDao {
         InventoryOpenHelper.getInstance().closeDatabase();
         return updatedRows;
     }
-
+*/
 
     public ContentValues createContent(Product product) {
         //ContentValues funciona como un mapa
@@ -123,8 +168,8 @@ public class ProductDao {
         contentValues.put(InventoryContract.ProductEntry.COLUMN_MODEL_CODE, product.getModelCode());
         contentValues.put(InventoryContract.ProductEntry.COLUMN_SHORTNAME, product.getShortname());
         contentValues.put(InventoryContract.ProductEntry.COLUMN_DESCRIPTION, product.getDescription());
-        contentValues.put(InventoryContract.ProductEntry.COLUMN_CATEGORY, product.getCategory());
-        contentValues.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_CLASS, product.getProductClass());
+        contentValues.put(InventoryContract.ProductEntry.COLUMN_CATEGORY_ID, product.getCategory());
+        contentValues.put(InventoryContract.ProductEntry.COLUMN_PRODUCT_CLASS_ID, product.getProductClass());
         contentValues.put(InventoryContract.ProductEntry.COLUMN_SECTOR_ID, product.getSectorID());
         contentValues.put(InventoryContract.ProductEntry.COLUMN_QUANTITY, product.getQuantity());
         contentValues.put(InventoryContract.ProductEntry.COLUMN_VALUE, product.getValue());
@@ -136,4 +181,5 @@ public class ProductDao {
         contentValues.put(InventoryContract.ProductEntry.COLUMN_NOTES, product.getNotes());
         return contentValues;
     }
+
 }

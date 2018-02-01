@@ -2,6 +2,8 @@ package com.example.usuario.inventorydatabase.data.db;
 
 import android.provider.BaseColumns;
 
+import java.util.HashMap;
+
 /**
  *
  * No se puede instanciar ni heredar de ella
@@ -164,6 +166,77 @@ public final class InventoryContract {
         );
     }
 
+    public static class ProductViewEntry implements BaseColumns {
+
+        public static final String COLUMN_DEPENDENCY_ID = "dependencyId";
+        public static final String COLUMN_SERIAL = "serial";
+        public static final String COLUMN_MODEL_CODE = "modelCode";
+        public static final String COLUMN_SHORTNAME = "shortname";
+        public static final String COLUMN_DESCRIPTION = "description";
+        public static final String COLUMN_CATEGORY_ID = "category";
+        public static final String COLUMN_CATEGORY_NAME = "categoryName";
+        public static final String COLUMN_PRODUCT_CLASS_ID = "productClass";
+        public static final String COLUMN_PRODUCT_CLASS_DESCRIPTION = "productClassDescription";
+        public static final String COLUMN_SECTOR_ID = "sectorId";
+        public static final String COLUMN_SECTOR_NAME = "sectorName";
+        public static final String COLUMN_QUANTITY = "quantity";
+        public static final String COLUMN_VALUE = "value";
+        public static final String COLUMN_VENDOR = "vendor";
+        public static final String COLUMN_BITMAP = "bitmap";
+        public static final String COLUMN_IMAGENAME = "imageName";
+        public static final String COLUMN_URL = "url";
+        public static final String COLUMN_DATE_PURCHASE = "datePurchase";
+        public static final String COLUMN_NOTES = "notes";
+
+        public static final String[] ALL_COLUMNS = new String[]{
+                COLUMN_DEPENDENCY_ID,
+                COLUMN_SERIAL,
+                COLUMN_MODEL_CODE,
+                COLUMN_SHORTNAME,
+                COLUMN_DESCRIPTION,
+                COLUMN_CATEGORY_ID,
+                COLUMN_CATEGORY_NAME,
+                COLUMN_PRODUCT_CLASS_ID,
+                COLUMN_PRODUCT_CLASS_DESCRIPTION,
+                COLUMN_SECTOR_ID,
+                COLUMN_SECTOR_NAME,
+                COLUMN_QUANTITY,
+                COLUMN_VALUE,
+                COLUMN_VENDOR,
+                COLUMN_BITMAP,
+                COLUMN_IMAGENAME,
+                COLUMN_URL,
+                COLUMN_DATE_PURCHASE,
+                COLUMN_NOTES
+        };
+        public static final String SELECT = String.format("" +
+                        "SELECT * FROM %s",
+                ProductEntry.TABLE_NAME
+        );
+        public static final String PRODUCT_VIEW = String.format(
+                "%s " +
+                        "INNER JOIN %s ON %s = %s.%s " +
+                        "INNER JOIN %s ON %s = %s.%s " +
+                        "INNER JOIN %s ON %s = %s.%s ",
+                ProductEntry.TABLE_NAME,
+                COLUMN_CATEGORY_ID, CategoryEntry.TABLE_NAME, BaseColumns._ID,
+                COLUMN_PRODUCT_CLASS_ID, ProductClassEntry.TABLE_NAME, BaseColumns._ID,
+                COLUMN_SECTOR_ID, SectorEntry.TABLE_NAME, BaseColumns._ID
+        );
+
+        public static HashMap<String, String> sProductViewProjectionMap;
+
+        static {
+            sProductViewProjectionMap = new HashMap<>();
+            //No se pone porque es redundante
+            //sProductViewProjectionMap.put(ProductEntry._ID, ProductEntry.TABLE_NAME + "." + BaseColumns._ID);
+            sProductViewProjectionMap.put(BaseColumns._ID, CategoryEntry.TABLE_NAME + "." + BaseColumns._ID);
+            sProductViewProjectionMap.put(BaseColumns._ID, ProductClassEntry.TABLE_NAME + "." + BaseColumns._ID);
+            sProductViewProjectionMap.put(BaseColumns._ID, SectorEntry.TABLE_NAME + "." + BaseColumns._ID);
+        }
+
+    }
+
     public static class ProductEntry implements BaseColumns {
 
         public static final String TABLE_NAME = "product";
@@ -172,8 +245,8 @@ public final class InventoryContract {
         public static final String COLUMN_MODEL_CODE = "modelCode";
         public static final String COLUMN_SHORTNAME = "shortname";
         public static final String COLUMN_DESCRIPTION = "description";
-        public static final String COLUMN_CATEGORY = "category";
-        public static final String COLUMN_PRODUCT_CLASS = "productClass";
+        public static final String COLUMN_CATEGORY_ID = "category";
+        public static final String COLUMN_PRODUCT_CLASS_ID = "productClass";
         public static final String COLUMN_SECTOR_ID = "sectorId";
         public static final String COLUMN_QUANTITY = "quantity";
         public static final String COLUMN_VALUE = "value";
@@ -186,11 +259,11 @@ public final class InventoryContract {
 
         public static final String REFERENCES_CATEGORY_ID = String.format(
                 "FOREIGN KEY (%s) REFERENCES %s(%s) ON UPDATE CASCADE ON DELETE RESTRICT",
-                COLUMN_CATEGORY, CategoryEntry.TABLE_NAME, BaseColumns._ID
+                COLUMN_CATEGORY_ID, CategoryEntry.TABLE_NAME, BaseColumns._ID
         );
         public static final String REFERENCES_PRODUCT_CLASS_ID = String.format(
                 "FOREIGN KEY (%s) REFERENCES %s(%s) ON UPDATE CASCADE ON DELETE RESTRICT",
-                COLUMN_PRODUCT_CLASS, ProductClassEntry.TABLE_NAME, BaseColumns._ID
+                COLUMN_PRODUCT_CLASS_ID, ProductClassEntry.TABLE_NAME, BaseColumns._ID
         );
         public static final String REFERENCES_SECTOR_ID = String.format(
                 "FOREIGN KEY (%s) REFERENCES %s(%s) ON UPDATE CASCADE ON DELETE RESTRICT",
@@ -210,8 +283,8 @@ public final class InventoryContract {
                 COLUMN_MODEL_CODE,
                 COLUMN_SHORTNAME,
                 COLUMN_DESCRIPTION,
-                COLUMN_CATEGORY,
-                COLUMN_PRODUCT_CLASS,
+                COLUMN_CATEGORY_ID,
+                COLUMN_PRODUCT_CLASS_ID,
                 COLUMN_SECTOR_ID,
                 COLUMN_QUANTITY,
                 COLUMN_VALUE,
@@ -253,8 +326,8 @@ public final class InventoryContract {
                 COLUMN_MODEL_CODE,
                 COLUMN_SHORTNAME,
                 COLUMN_DESCRIPTION,
-                COLUMN_CATEGORY,
-                COLUMN_PRODUCT_CLASS,
+                COLUMN_CATEGORY_ID,
+                COLUMN_PRODUCT_CLASS_ID,
                 COLUMN_SECTOR_ID,
                 COLUMN_QUANTITY,
                 COLUMN_VALUE,
@@ -279,8 +352,8 @@ public final class InventoryContract {
                 COLUMN_MODEL_CODE,
                 COLUMN_SHORTNAME,
                 COLUMN_DESCRIPTION,
-                COLUMN_CATEGORY,
-                COLUMN_PRODUCT_CLASS,
+                COLUMN_CATEGORY_ID,
+                COLUMN_PRODUCT_CLASS_ID,
                 COLUMN_SECTOR_ID,
                 COLUMN_QUANTITY,
                 COLUMN_VALUE,
