@@ -1,5 +1,6 @@
 package com.example.usuario.inventorydatabase.data.db.dao;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -44,12 +45,42 @@ public class SectorDao {
         return sectors;
     }
 
-    public void add(Sector sector) {
+    public long add(Sector sector) {
+        SQLiteDatabase sqLiteDatabase = InventoryOpenHelper.getInstance().openDatabase();
+        //nullColumnHack crea filas sólo con id para evitar errores
+        //por clave ajena, pero no lo vamos a usar
+        long id = sqLiteDatabase.insert(
+                InventoryContract.SectorEntry.TABLE_NAME,
+                null,
+                createContent(sector)
+        );
+        InventoryOpenHelper.getInstance().closeDatabase();
+        return id;
+    }
+
+    public int update(Sector sector) {
+        SQLiteDatabase sqLiteDatabase = InventoryOpenHelper.getInstance().openDatabase();
+        String[] whereArgs = new String[]{"" + sector.getID()};
+        int updatedRows = sqLiteDatabase.update(
+                InventoryContract.SectorEntry.TABLE_NAME,
+                createContent(sector),
+                null,
+                null
+        );
+        InventoryOpenHelper.getInstance().closeDatabase();
+        return updatedRows;
 
     }
 
-    public void update(Sector sector) {
-
+    private ContentValues createContent(Sector sector) {
+        //ContentValues funciona como un mapa
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(InventoryContract.SectorEntry.COLUMN_DEPENDENCY_ID, sector.getDependencyId());
+        contentValues.put(InventoryContract.SectorEntry.COLUMN_NAME, sector.getName());
+        contentValues.put(InventoryContract.SectorEntry.COLUMN_SHORTNAME, sector.getShortname());
+        contentValues.put(InventoryContract.SectorEntry.COLUMN_DESCRIPTION, sector.getDescription());
+        contentValues.put(InventoryContract.SectorEntry.COLUMN_IMAGENAME, sector.getImageName());
+        return contentValues;
     }
 
 }

@@ -1,95 +1,65 @@
 package com.example.usuario.inventorydatabase.data.db.model;
 
+
+import android.os.Parcel;
+
 /**
  * Created by usuario on 1/02/18.
  */
 
-public class ProductView {
+public class ProductView extends Product {
+    public static final String TAG = "ProductView";
 
-    private int id;
-    private int dependencyId;
-    private String serial;
-    private String modelCode;
-    private String shortname;
-    private String description;
-    private String categoryName;
-    private String productClassDescription;
-    private String sectorName;
-    private int quantity;
-    private float value;
-    private String vendor;
-    private int bitmap;
-    private String imageName;
-    private String url;
-    private String datePurchase;
-    private String notes;
+    public static final Creator<ProductView> CREATOR = new Creator<ProductView>() {
+        @Override
+        public ProductView createFromParcel(Parcel in) {
+            return new ProductView(in);
+        }
 
-    public ProductView(int id, int dependencyId, String serial, String modelCode, String shortname, String description, String categoryName, String productClassDescription, String sectorName, int quantity, float value, String vendor, int bitmap, String imageName, String url, String datePurchase, String notes) {
-        this.id = id;
-        this.dependencyId = dependencyId;
-        this.serial = serial;
-        this.modelCode = modelCode;
-        this.shortname = shortname;
-        this.description = description;
+        @Override
+        public ProductView[] newArray(int size) {
+            return new ProductView[size];
+        }
+    };
+
+    String categoryName;
+    String productClassDescription;
+    String sectorName;
+
+    public ProductView(int id, int dependencyId, String serial, String modelCode, String shortname, String description, int category, int productClass, int sectorID, int quantity, float value, String vendor, int bitmap, String imageName, String url, String datePurchase, String notes, String categoryName, String productClassDescription, String sectorName) {
+        super(id, dependencyId, serial, modelCode, shortname, description, category, productClass, sectorID, quantity, value, vendor, bitmap, imageName, url, datePurchase, notes);
         this.categoryName = categoryName;
         this.productClassDescription = productClassDescription;
         this.sectorName = sectorName;
-        this.quantity = quantity;
-        this.value = value;
-        this.vendor = vendor;
-        this.bitmap = bitmap;
-        this.imageName = imageName;
-        this.url = url;
-        this.datePurchase = datePurchase;
-        this.notes = notes;
     }
 
-    public int getId() {
-        return id;
+    public ProductView(Product product) {
+        super(product.get_ID(), product.getDependencyId(), product.getSerial(),
+                product.getModelCode(), product.getShortname(), product.getDescription(),
+                product.getCategory(), product.getProductClass(), product.getSectorID(),
+                product.getQuantity(), product.getValue(), product.getVendor(),
+                product.getBitmap(), product.getImageName(), product.getUrl(), product.getDatePurchase(),
+                product.getNotes());
     }
 
-    public void setId(int id) {
-        this.id = id;
+    protected ProductView(Parcel in) {
+        super(in);
+        categoryName = in.readString();
+        productClassDescription = in.readString();
+        sectorName = in.readString();
     }
 
-    public int getDependencyId() {
-        return dependencyId;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setDependencyId(int dependencyId) {
-        this.dependencyId = dependencyId;
-    }
-
-    public String getSerial() {
-        return serial;
-    }
-
-    public void setSerial(String serial) {
-        this.serial = serial;
-    }
-
-    public String getModelCode() {
-        return modelCode;
-    }
-
-    public void setModelCode(String modelCode) {
-        this.modelCode = modelCode;
-    }
-
-    public String getShortname() {
-        return shortname;
-    }
-
-    public void setShortname(String shortname) {
-        this.shortname = shortname;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        super.writeToParcel(parcel, i);
+        parcel.writeString(categoryName);
+        parcel.writeString(productClassDescription);
+        parcel.writeString(sectorName);
     }
 
     public String getCategoryName() {
@@ -114,70 +84,6 @@ public class ProductView {
 
     public void setSectorName(String sectorName) {
         this.sectorName = sectorName;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public float getValue() {
-        return value;
-    }
-
-    public void setValue(float value) {
-        this.value = value;
-    }
-
-    public String getVendor() {
-        return vendor;
-    }
-
-    public void setVendor(String vendor) {
-        this.vendor = vendor;
-    }
-
-    public int getBitmap() {
-        return bitmap;
-    }
-
-    public void setBitmap(int bitmap) {
-        this.bitmap = bitmap;
-    }
-
-    public String getImageName() {
-        return imageName;
-    }
-
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getDatePurchase() {
-        return datePurchase;
-    }
-
-    public void setDatePurchase(String datePurchase) {
-        this.datePurchase = datePurchase;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
     }
 
 }

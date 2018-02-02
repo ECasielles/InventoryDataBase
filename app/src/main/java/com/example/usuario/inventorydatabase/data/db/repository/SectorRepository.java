@@ -2,6 +2,7 @@ package com.example.usuario.inventorydatabase.data.db.repository;
 
 import com.example.usuario.inventorydatabase.data.db.dao.SectorDao;
 import com.example.usuario.inventorydatabase.data.db.model.Sector;
+import com.example.usuario.inventorydatabase.ui.sector.SectorRepositoryCallback;
 
 import java.util.ArrayList;
 
@@ -36,12 +37,14 @@ public class SectorRepository {
         return sectorDao.loadAll();
     }
 
-    public void addSector(Sector sector) {
-        sectorDao.add(sector);
+    public void addSector(Sector sector, SectorRepositoryCallback callback) {
+        if (sectorDao.add(sector) != -1)
+            callback.onSuccess();
     }
 
-    public void updateSector(Sector sector) {
-        sectorDao.update(sector);
+    public void updateSector(Sector sector, SectorRepositoryCallback callback) {
+        if (sectorDao.update(sector) != 0)
+            callback.onSuccess();
     }
 
 }

@@ -4,9 +4,6 @@ import com.example.usuario.inventorydatabase.data.db.model.Sector;
 
 import java.util.ArrayList;
 
-/**
- * Created by icenri on 2/1/18.
- */
 
 public class ListSectorPresenter implements ListSectorContract.Presenter, ListSectorInteractor.OnSectorsLoadedListener {
     ListSectorContract.View view;

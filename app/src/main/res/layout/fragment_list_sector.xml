@@ -7,8 +7,6 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     >
 
-    <!--Con app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    cuando el RecyclerView haga un Scroll, tendrá en cuenta que hay un AppBar se sincronizará-->
     <android.support.v7.widget.RecyclerView
         android:id="@android:id/list"
         android:layout_width="match_parent"

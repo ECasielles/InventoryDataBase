@@ -2,10 +2,6 @@ package com.example.usuario.inventorydatabase.ui.sector;
 
 import com.example.usuario.inventorydatabase.data.db.model.Sector;
 
-/**
- * Created by icenri on 2/1/18.
- */
-
 public class ViewSectorPresenter implements ViewSectorContract.Presenter, ViewSectorInteractor.OnSectorsUpdatedListener {
 
     private ViewSectorContract.View view;
@@ -17,7 +13,12 @@ public class ViewSectorPresenter implements ViewSectorContract.Presenter, ViewSe
     }
 
     @Override
-    public void updateSectors(Sector sector) {
+    public void addSector(Sector sector) {
+        interactor.addSector(sector);
+    }
+
+    @Override
+    public void updateSector(Sector sector) {
         interactor.updateSectors(sector);
     }
 
@@ -25,4 +26,5 @@ public class ViewSectorPresenter implements ViewSectorContract.Presenter, ViewSe
     public void onSectorsUpdated() {
         view.onSectorsUpdated();
     }
+
 }

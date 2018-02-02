@@ -12,7 +12,8 @@ import android.widget.AdapterView;
 
 import com.example.usuario.inventorydatabase.R;
 import com.example.usuario.inventorydatabase.adapter.ProductAdapter;
-import com.example.usuario.inventorydatabase.data.db.model.Product;
+import com.example.usuario.inventorydatabase.data.db.model.ProductView;
+import com.example.usuario.inventorydatabase.data.db.repository.ProductRepository;
 import com.example.usuario.inventorydatabase.ui.product.contract.ProductListContract;
 import com.example.usuario.inventorydatabase.ui.product.presenter.ProductListPresenter;
 
@@ -57,18 +58,17 @@ public class ProductListFragment extends ListFragment implements ProductListCont
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setListAdapter(adapter);
-        presenter.loadProducts();
+        presenter.loadProductViews();
 
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Parcelable parcel = (Parcelable) adapterView.getItemAtPosition(position);
+                Parcelable parcel = ProductRepository.getInstance().search(position);
                 Bundle bundle = new Bundle();
-                bundle.putParcelable(Product.TAG, parcel);
+                bundle.putParcelable(ProductView.TAG, parcel);
                 callback.viewProduct(bundle);
             }
         });
-
     }
 
     @Override
@@ -77,9 +77,9 @@ public class ProductListFragment extends ListFragment implements ProductListCont
     }
 
     @Override
-    public void showProducts(ArrayList<Product> products) {
+    public void showProductViews(ArrayList<ProductView> productViews) {
         adapter.clear();
-        adapter.addAll(products);
+        adapter.addAll(productViews);
     }
 
     public interface OnProductSelectedListener {

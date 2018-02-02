@@ -10,9 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.usuario.inventorydatabase.R;
-import com.example.usuario.inventorydatabase.data.db.model.Category;
-import com.example.usuario.inventorydatabase.data.db.model.Product;
-import com.example.usuario.inventorydatabase.data.db.model.ProductClass;
+import com.example.usuario.inventorydatabase.data.db.model.ProductView;
 import com.example.usuario.inventorydatabase.ui.product.contract.ProductViewContract;
 import com.example.usuario.inventorydatabase.ui.product.presenter.ProductViewPresenter;
 
@@ -23,13 +21,8 @@ import com.example.usuario.inventorydatabase.ui.product.presenter.ProductViewPre
 public class ProductViewFragment extends Fragment implements ProductViewContract.View {
     public static final String TAG = "ProductViewFragment";
 
-    EditText edtShortname, edtSerial, edtVendor, edtModelcode, edtDescription, edtPrice, edtDatePurchase, edtUrl, edtNotes;
-    TextView txvCategory, spnSubcategory, txvProductClass;
-    int dependencyId;
-    int sectorID;
-    int quantity;
-    int bitmap;
-    String imageName;
+    private EditText edtShortname, edtSerial, edtVendor, edtModelcode, edtDescription, edtPrice, edtDatePurchase, edtUrl, edtNotes;
+    private TextView txvCategory, txvProductClass, txvSectorName;
     private ProductViewContract.Presenter presenter;
 
     @Override
@@ -53,47 +46,33 @@ public class ProductViewFragment extends Fragment implements ProductViewContract
         edtUrl = view.findViewById(R.id.edtUrl);
         edtNotes = view.findViewById(R.id.edtNotes);
         txvCategory = view.findViewById(R.id.txvCategory);
-        //spnSubcategory = view.findViewById(R.id.spnSubCategory);
         txvProductClass = view.findViewById(R.id.txvProductClass);
+        txvSectorName = view.findViewById(R.id.txvSectorName);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
         if (getArguments() != null) {
-            Product product = getArguments().getParcelable(Product.TAG);
-            edtShortname.setText(product.getShortname());
-            edtSerial.setText(product.getSerial());
-            edtVendor.setText(product.getVendor());
-            edtModelcode.setText(product.getModelCode());
-            edtDescription.setText(product.getDescription());
-            edtPrice.setText(String.valueOf(product.getValue()));
-            edtDatePurchase.setText(product.getDatePurchase());
-            edtUrl.setText(product.getUrl());
-            edtNotes.setText(product.getNotes());
-
-            //spnSubcategory.setSelection(product().getSubcategory());
-            presenter.loadCategories(product.getCategory());
-            presenter.loadProductClasses(product.getProductClass());
+            ProductView productView = getArguments().getParcelable(ProductView.TAG);
+            edtShortname.setText(productView.getShortname());
+            edtSerial.setText(productView.getSerial());
+            edtVendor.setText(productView.getVendor());
+            edtModelcode.setText(productView.getModelCode());
+            edtDescription.setText(productView.getDescription());
+            edtPrice.setText(String.valueOf(productView.getValue()));
+            edtDatePurchase.setText(productView.getDatePurchase());
+            edtUrl.setText(productView.getUrl());
+            edtNotes.setText(productView.getNotes());
+            txvCategory.setText(productView.getCategoryName());
+            txvProductClass.setText(productView.getProductClassDescription());
+            txvSectorName.setText(productView.getSectorName());
         }
-
     }
 
     @Override
     public void setPresenter(ProductViewContract.Presenter presenter) {
         this.presenter = presenter;
     }
-
-    @Override
-    public void saveCategories(Category category) {
-        txvCategory.setText(category.getShortname());
-    }
-
-    @Override
-    public void saveProductClasses(ProductClass productClass) {
-        txvProductClass.setText(productClass.getDescription());
-    }
-
 
 }

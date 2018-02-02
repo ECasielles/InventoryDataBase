@@ -1,6 +1,6 @@
 package com.example.usuario.inventorydatabase.ui.product.contract;
 
-import com.example.usuario.inventorydatabase.data.db.model.Product;
+import com.example.usuario.inventorydatabase.data.db.model.ProductView;
 
 import java.util.ArrayList;
 
@@ -13,11 +13,11 @@ public interface ProductListContract {
     interface View {
         void setPresenter(ProductListContract.Presenter presenter);
 
-        void showProducts(ArrayList<Product> products);
+        void showProductViews(ArrayList<ProductView> productViews);
     }
 
     interface Presenter {
-        void loadProducts();
+        void loadProductViews();
     }
 
 }

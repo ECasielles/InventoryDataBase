@@ -159,25 +159,25 @@
             />
 
         <TextView
-            android:id="@+id/txvSubCategoryLabel"
+            android:id="@+id/txvSectorNameLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
-            android:text="@string/txvSubCategory"
+            android:text="@string/txvSectorName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txvCategoryLabel"
             />
 
         <TextView
-            android:id="@+id/spnSubCategory"
+            android:id="@+id/txvSectorName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="@+id/txvCategory"
             app:layout_constraintStart_toStartOf="@+id/txvCategory"
             app:layout_constraintTop_toBottomOf="@+id/txvCategory"
-            tools:text="Subcategory"
+            tools:text="Sector Name"
             />
 
         <TextView
@@ -188,7 +188,7 @@
             android:layout_marginTop="32dp"
             android:text="@string/txvType"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txvSubCategoryLabel"
+            app:layout_constraintTop_toBottomOf="@+id/txvSectorNameLabel"
             />
 
         <TextView
@@ -196,9 +196,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toEndOf="@+id/spnSubCategory"
-            app:layout_constraintStart_toStartOf="@+id/spnSubCategory"
-            app:layout_constraintTop_toBottomOf="@+id/spnSubCategory"
+            app:layout_constraintEnd_toEndOf="@+id/txvSectorName"
+            app:layout_constraintStart_toStartOf="@+id/txvSectorName"
+            app:layout_constraintTop_toBottomOf="@+id/txvSectorName"
             tools:text="Product Class"
             />
 

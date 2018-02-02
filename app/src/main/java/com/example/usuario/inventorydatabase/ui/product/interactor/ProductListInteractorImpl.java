@@ -15,8 +15,8 @@ public class ProductListInteractorImpl implements ProductListInteractor {
     }
 
     @Override
-    public void loadProducts() {
-        listener.onProductsLoaded(ProductRepository.getInstance().getProducts());
+    public void loadProductViews() {
+        listener.onProductViewsLoaded(ProductRepository.getInstance().getProductViews());
     }
 
 }

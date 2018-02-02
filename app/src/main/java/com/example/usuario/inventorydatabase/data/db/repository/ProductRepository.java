@@ -1,13 +1,11 @@
 package com.example.usuario.inventorydatabase.data.db.repository;
 
 import com.example.usuario.inventorydatabase.data.db.dao.ProductDao;
+import com.example.usuario.inventorydatabase.data.db.dao.ProductViewDao;
 import com.example.usuario.inventorydatabase.data.db.model.Product;
+import com.example.usuario.inventorydatabase.data.db.model.ProductView;
 
 import java.util.ArrayList;
-
-/**
- * Created by usuario on 26/10/17.
- */
 
 public class ProductRepository {
 
@@ -18,9 +16,11 @@ public class ProductRepository {
     }
 
     private ProductDao productDao;
+    private ProductViewDao productViewDao;
 
     private ProductRepository() {
         productDao = new ProductDao();
+        productViewDao = new ProductViewDao();
     }
 
 
@@ -34,8 +34,12 @@ public class ProductRepository {
         return productDao.loadAll();
     }
 
-    public void addProduct(Product product) {
-        long id = productDao.add(product);
+    public ArrayList<ProductView> getProductViews() {
+        return productViewDao.loadAll();
+    }
+
+    public ProductView search(int id) {
+        return productViewDao.search(id);
     }
 
 }

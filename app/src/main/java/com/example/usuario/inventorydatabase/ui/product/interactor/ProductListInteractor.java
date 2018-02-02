@@ -1,6 +1,6 @@
 package com.example.usuario.inventorydatabase.ui.product.interactor;
 
-import com.example.usuario.inventorydatabase.data.db.model.Product;
+import com.example.usuario.inventorydatabase.data.db.model.ProductView;
 
 import java.util.ArrayList;
 
@@ -10,10 +10,10 @@ import java.util.ArrayList;
 
 public interface ProductListInteractor {
 
-    void loadProducts();
+    void loadProductViews();
 
     interface OnProductLoadedListener {
-        void onProductsLoaded(ArrayList<Product> products);
+        void onProductViewsLoaded(ArrayList<ProductView> productViews);
     }
 
 }

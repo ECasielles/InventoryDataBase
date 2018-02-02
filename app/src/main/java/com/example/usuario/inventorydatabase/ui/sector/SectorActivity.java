@@ -58,7 +58,8 @@ public class SectorActivity extends AppCompatActivity implements ListSectorFragm
             viewSectorFragment = ViewSectorFragment.newInstance(bundle);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.activity_sector, viewSectorFragment, ViewSectorFragment.TAG)
+                    .replace(R.id.activity_sector, viewSectorFragment, ViewSectorFragment.TAG)
+                    .addToBackStack(ViewSectorFragment.TAG)
                     .commit();
         }
     }

@@ -59,6 +59,7 @@ public class Product implements Parcelable {
         this.notes = notes;
     }
 
+
     protected Product(Parcel in) {
         id = in.readInt();
         dependencyId = in.readInt();

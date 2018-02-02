@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.usuario.inventorydatabase.data.db.InventoryContract;
 import com.example.usuario.inventorydatabase.data.db.InventoryOpenHelper;
 import com.example.usuario.inventorydatabase.data.db.model.Product;
-import com.example.usuario.inventorydatabase.data.db.model.ProductView;
 
 import java.util.ArrayList;
 
@@ -17,14 +16,6 @@ import java.util.ArrayList;
 
 public class ProductDao {
 
-    /**
-     * Método que devuelve un cursor con todas las dependencias
-     * de la BD.
-     * Se le podrían pasar todos los parámetros
-     *
-     * @return
-     */
-    //public Observable<ArrayList<Dependency>> loadAll() <-- Usando ReactiveX
     public ArrayList<Product> loadAll() {
         ArrayList<Product> products = new ArrayList<>();
         SQLiteDatabase db = InventoryOpenHelper.getInstance().openDatabase();
@@ -65,48 +56,6 @@ public class ProductDao {
         InventoryOpenHelper.getInstance().closeDatabase();
         return products;
     }
-
-    public ProductView loadProductView() {
-        ProductView productView = null;
-        SQLiteDatabase db = InventoryOpenHelper.getInstance().openDatabase();
-
-        //rawQuery interpreta el comando usando '?' en la consulta.
-        //A medio camino entre SQL y SQLite
-        Cursor cursor = db.query(
-                InventoryContract.ProductViewEntry.TABLE_NAME,
-                InventoryContract.ProductEntry.ALL_COLUMNS,
-                null, null, null, null,
-                InventoryContract.ProductEntry.DEFAULT_SORT, null
-        );
-        if (cursor.moveToFirst()) {
-            do {
-                productView = new ProductView(
-                        cursor.getInt(0),
-                        cursor.getInt(1),
-                        cursor.getString(2),
-                        cursor.getString(4),
-                        cursor.getString(5),
-                        cursor.getString(3),
-                        cursor.getString(6),
-                        cursor.getString(7),
-                        cursor.getString(8),
-                        cursor.getInt(9),
-                        cursor.getFloat(10),
-                        cursor.getString(11),
-                        cursor.getInt(12),
-                        cursor.getString(13),
-                        cursor.getString(14),
-                        cursor.getString(15),
-                        cursor.getString(16)
-                );
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        InventoryOpenHelper.getInstance().closeDatabase();
-        return productView;
-    }
-
-
 
     /**
      * Método que añade una dependencia en la base de datos
@@ -181,5 +130,4 @@ public class ProductDao {
         contentValues.put(InventoryContract.ProductEntry.COLUMN_NOTES, product.getNotes());
         return contentValues;
     }
-
 }

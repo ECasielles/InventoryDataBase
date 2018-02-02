@@ -10,7 +10,7 @@ import java.util.HashMap;
  */
 public final class InventoryContract {
 
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 7;
     public static final String DATABASE_NAME = "Inventory.db";
     //Constructor privado para que no sea instanciada
     private InventoryContract() { }
@@ -168,7 +168,7 @@ public final class InventoryContract {
 
     public static class ProductViewEntry implements BaseColumns {
 
-        public static final String COLUMN_DEPENDENCY_ID = "dependencyId";
+        public static final String TABLE_NAME = "product";
         public static final String COLUMN_SERIAL = "serial";
         public static final String COLUMN_MODEL_CODE = "modelCode";
         public static final String COLUMN_SHORTNAME = "shortname";
@@ -177,7 +177,7 @@ public final class InventoryContract {
         public static final String COLUMN_CATEGORY_NAME = "categoryName";
         public static final String COLUMN_PRODUCT_CLASS_ID = "productClass";
         public static final String COLUMN_PRODUCT_CLASS_DESCRIPTION = "productClassDescription";
-        public static final String COLUMN_SECTOR_ID = "sectorId";
+        public static final String COLUMN_SECTOR_ID = "sector";
         public static final String COLUMN_SECTOR_NAME = "sectorName";
         public static final String COLUMN_QUANTITY = "quantity";
         public static final String COLUMN_VALUE = "value";
@@ -189,7 +189,6 @@ public final class InventoryContract {
         public static final String COLUMN_NOTES = "notes";
 
         public static final String[] ALL_COLUMNS = new String[]{
-                COLUMN_DEPENDENCY_ID,
                 COLUMN_SERIAL,
                 COLUMN_MODEL_CODE,
                 COLUMN_SHORTNAME,
@@ -209,32 +208,44 @@ public final class InventoryContract {
                 COLUMN_DATE_PURCHASE,
                 COLUMN_NOTES
         };
-        public static final String SELECT = String.format("" +
-                        "SELECT * FROM %s",
-                ProductEntry.TABLE_NAME
-        );
-        public static final String PRODUCT_VIEW = String.format(
+
+        public static final String PRODUCT_INNER = String.format(
                 "%s " +
-                        "INNER JOIN %s ON %s = %s.%s " +
-                        "INNER JOIN %s ON %s = %s.%s " +
-                        "INNER JOIN %s ON %s = %s.%s ",
-                ProductEntry.TABLE_NAME,
-                COLUMN_CATEGORY_ID, CategoryEntry.TABLE_NAME, BaseColumns._ID,
-                COLUMN_PRODUCT_CLASS_ID, ProductClassEntry.TABLE_NAME, BaseColumns._ID,
-                COLUMN_SECTOR_ID, SectorEntry.TABLE_NAME, BaseColumns._ID
+                        "INNER JOIN %s ON %s.%s = %s.%s " +
+                        "INNER JOIN %s ON %s.%s = %s.%s " +
+                        "INNER JOIN %s ON %s.%s = %s.%s ",
+                ProductViewEntry.TABLE_NAME,
+                COLUMN_CATEGORY_ID, ProductViewEntry.TABLE_NAME, COLUMN_CATEGORY_ID, CategoryEntry.TABLE_NAME, CategoryEntry._ID,
+                COLUMN_PRODUCT_CLASS_ID, ProductViewEntry.TABLE_NAME, COLUMN_PRODUCT_CLASS_ID, ProductClassEntry.TABLE_NAME, ProductClassEntry._ID,
+                COLUMN_SECTOR_ID, ProductViewEntry.TABLE_NAME, COLUMN_SECTOR_ID, SectorEntry.TABLE_NAME, SectorEntry._ID
         );
+        public static final String DEFAULT_SORT = BaseColumns._ID;
 
         public static HashMap<String, String> sProductViewProjectionMap;
 
         static {
             sProductViewProjectionMap = new HashMap<>();
             //No se pone porque es redundante
-            //sProductViewProjectionMap.put(ProductEntry._ID, ProductEntry.TABLE_NAME + "." + BaseColumns._ID);
-            sProductViewProjectionMap.put(BaseColumns._ID, CategoryEntry.TABLE_NAME + "." + BaseColumns._ID);
-            sProductViewProjectionMap.put(BaseColumns._ID, ProductClassEntry.TABLE_NAME + "." + BaseColumns._ID);
-            sProductViewProjectionMap.put(BaseColumns._ID, SectorEntry.TABLE_NAME + "." + BaseColumns._ID);
+            sProductViewProjectionMap.put(ProductEntry._ID, ProductEntry.TABLE_NAME + "." + BaseColumns._ID);
+            sProductViewProjectionMap.put(COLUMN_SERIAL, COLUMN_SERIAL);
+            sProductViewProjectionMap.put(COLUMN_MODEL_CODE, COLUMN_MODEL_CODE);
+            sProductViewProjectionMap.put(COLUMN_SHORTNAME, ProductEntry.TABLE_NAME + "." + ProductEntry.COLUMN_SHORTNAME);
+            sProductViewProjectionMap.put(COLUMN_DESCRIPTION, ProductEntry.TABLE_NAME + "." + ProductEntry.COLUMN_DESCRIPTION);
+            sProductViewProjectionMap.put(COLUMN_CATEGORY_ID, CategoryEntry.TABLE_NAME + "." + CategoryEntry._ID);
+            sProductViewProjectionMap.put(COLUMN_CATEGORY_NAME, CategoryEntry.TABLE_NAME + "." + CategoryEntry.COLUMN_NAME);
+            sProductViewProjectionMap.put(COLUMN_PRODUCT_CLASS_ID, ProductClassEntry.TABLE_NAME + "." + ProductClassEntry._ID);
+            sProductViewProjectionMap.put(COLUMN_PRODUCT_CLASS_DESCRIPTION, ProductClassEntry.TABLE_NAME + "." + ProductClassEntry.COLUMN_DESCRIPTION);
+            sProductViewProjectionMap.put(COLUMN_SECTOR_ID, SectorEntry.TABLE_NAME + "." + SectorEntry._ID);
+            sProductViewProjectionMap.put(COLUMN_SECTOR_NAME, SectorEntry.TABLE_NAME + "." + SectorEntry.COLUMN_NAME);
+            sProductViewProjectionMap.put(COLUMN_QUANTITY, COLUMN_QUANTITY);
+            sProductViewProjectionMap.put(COLUMN_VALUE, COLUMN_VALUE);
+            sProductViewProjectionMap.put(COLUMN_VENDOR, COLUMN_VENDOR);
+            sProductViewProjectionMap.put(COLUMN_BITMAP, COLUMN_BITMAP);
+            sProductViewProjectionMap.put(COLUMN_IMAGENAME, ProductEntry.TABLE_NAME + "." + ProductEntry.COLUMN_IMAGENAME);
+            sProductViewProjectionMap.put(COLUMN_URL, COLUMN_URL);
+            sProductViewProjectionMap.put(COLUMN_DATE_PURCHASE, COLUMN_DATE_PURCHASE);
+            sProductViewProjectionMap.put(COLUMN_NOTES, COLUMN_NOTES);
         }
-
     }
 
     public static class ProductEntry implements BaseColumns {
@@ -247,7 +258,7 @@ public final class InventoryContract {
         public static final String COLUMN_DESCRIPTION = "description";
         public static final String COLUMN_CATEGORY_ID = "category";
         public static final String COLUMN_PRODUCT_CLASS_ID = "productClass";
-        public static final String COLUMN_SECTOR_ID = "sectorId";
+        public static final String COLUMN_SECTOR_ID = "sector";
         public static final String COLUMN_QUANTITY = "quantity";
         public static final String COLUMN_VALUE = "value";
         public static final String COLUMN_VENDOR = "vendor";

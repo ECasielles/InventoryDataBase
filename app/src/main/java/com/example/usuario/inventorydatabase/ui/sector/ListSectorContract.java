@@ -12,7 +12,6 @@ public interface ListSectorContract {
 
     interface View {
         void setPresenter(ListSectorContract.Presenter presenter);
-
         void showSectors(ArrayList<Sector> sectors);
     }
 

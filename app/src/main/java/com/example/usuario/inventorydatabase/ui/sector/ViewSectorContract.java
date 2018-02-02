@@ -10,12 +10,13 @@ public interface ViewSectorContract {
 
     interface View {
         void setPresenter(ViewSectorContract.Presenter presenter);
-
         void onSectorsUpdated();
     }
 
     interface Presenter {
-        void updateSectors(Sector sector);
+        void addSector(Sector sector);
+
+        void updateSector(Sector sector);
     }
 
 }

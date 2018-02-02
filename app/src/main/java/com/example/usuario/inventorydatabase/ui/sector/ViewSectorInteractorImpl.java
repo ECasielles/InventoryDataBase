@@ -16,8 +16,16 @@ public class ViewSectorInteractorImpl implements ViewSectorInteractor {
 
     @Override
     public void updateSectors(Sector sector) {
-        SectorRepository.getInstance().updateSector(sector);
-        listener.onSectorsUpdated();
+        SectorRepository.getInstance().updateSector(sector, this);
     }
 
+    @Override
+    public void addSector(Sector sector) {
+        SectorRepository.getInstance().addSector(sector, this);
+    }
+
+    @Override
+    public void onSuccess() {
+        listener.onSectorsUpdated();
+    }
 }

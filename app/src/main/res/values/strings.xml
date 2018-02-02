@@ -17,7 +17,7 @@
     <string name="txvVendor">Vendedor</string>
     <string name="txvModelCode">Modelo</string>
     <string name="txvCategory">Categoría</string>
-    <string name="txvSubCategory">Subcategoría</string>
+    <string name="txvSectorName">Sector</string>
     <string name="txvType">Tipo</string>
     <string name="txvDescription">Descripción</string>
     <string name="txvPrice">Precio</string>
