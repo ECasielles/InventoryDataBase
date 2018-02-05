@@ -81,8 +81,12 @@ public class ProductViewDao {
                 sqLiteDatabase, InventoryContract.ProductViewEntry.ALL_COLUMNS,
                 selection, selectionArgs, null, null, null
         );
+        cursor.moveToFirst();
+        Log.i("ProductViewDao", "" + cursor.getInt(0));
+        cursor.close();
+
         ProductView productView = null;
-        if (cursor.moveToFirst()) {
+        /*if (cursor.moveToFirst()) {
             do {
                 productView = new ProductView(
                         cursor.getInt(0),
@@ -107,7 +111,8 @@ public class ProductViewDao {
                         cursor.getString(18)
                 );
             } while (cursor.moveToNext());
-        }
+        }*/
+
         return productView;
     }
 }

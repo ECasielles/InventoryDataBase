@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.usuario.inventorydatabase.R;
 import com.example.usuario.inventorydatabase.data.db.model.ProductView;
@@ -55,6 +56,9 @@ public class ProductViewFragment extends Fragment implements ProductViewContract
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         if (getArguments() != null) {
             ProductView productView = getArguments().getParcelable(ProductView.TAG);
+            if(productView == null)
+                Toast.makeText(getContext(), "ASD", Toast.LENGTH_SHORT).show();
+
             edtShortname.setText(productView.getShortname());
             edtSerial.setText(productView.getSerial());
             edtVendor.setText(productView.getVendor());

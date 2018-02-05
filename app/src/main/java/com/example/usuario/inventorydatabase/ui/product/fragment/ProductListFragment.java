@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.example.usuario.inventorydatabase.R;
 import com.example.usuario.inventorydatabase.adapter.ProductAdapter;
@@ -63,10 +64,11 @@ public class ProductListFragment extends ListFragment implements ProductListCont
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Parcelable parcel = ProductRepository.getInstance().search(position);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(ProductView.TAG, parcel);
-                callback.viewProduct(bundle);
+                //Parcelable parcel = ProductRepository.getInstance().search(position);
+                Toast.makeText(getActivity(), ProductRepository.getInstance().search(position) == null ? "NULL" : "NOT NULL", Toast.LENGTH_SHORT).show();
+                //Bundle bundle = new Bundle();
+                //bundle.putParcelable(ProductView.TAG, parcel);
+                //callback.viewProduct(bundle);
             }
         });
     }

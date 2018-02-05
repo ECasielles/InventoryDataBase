@@ -19,13 +19,14 @@
             >
         </activity>
         <activity android:name="com.example.usuario.inventorydatabase.ui.inventory.InventoryActivity"/>
-        <activity android:name="com.example.usuario.inventorydatabase.ui.dashboard.DashboardActivity"/>
-        <activity android:name="com.example.usuario.inventorydatabase.ui.product.ProductActivity">
+        <activity android:name="com.example.usuario.inventorydatabase.ui.dashboard.DashboardActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity android:name="com.example.usuario.inventorydatabase.ui.product.ProductActivity">
         </activity>
         <activity android:name="com.example.usuario.inventorydatabase.ui.dependency.DependencyActivity" />
         <activity android:name="com.example.usuario.inventorydatabase.ui.sector.SectorActivity">
